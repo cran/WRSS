@@ -1,0 +1,14 @@
+Package: WRSS
+Type: Package
+Title: Water Resources System Simulator
+Depends: R (>= 3.0.0), graphics, stats, Hmisc
+Version: 1.0
+Date: 2017-11-09
+Author: Rezgar Arabzadeh; Parisa Aberi; Kaveh Panaghi; Shahab Araghinejad; Majid Montaseri
+Maintainer: Rezgar Arabzadeh <rezgararabzadeh@ut.ac.ir>
+Description: Water resources system simulator is a tool for simulation and analysis of large-scale water resources systems. There are existing packages on CRAN or other R repositories for reservoir system simulation and optimization (e.g. 'RSSOP' and 'reservoir'). The 'reservoir' proposes an implementation of stochastic dynamic programming for single reservoir operation, while 'RSSOP' and 'WRSS' are just simulator platforms but with capability of large scale reservoir operation. Although both 'RSSOP' and 'WRSS' are simulators for reservoirs systems, 'WRSS' enables us to simulate some more types of hydro-structures (e.g. aquifers, diversions, and etc.). Moreover, 'WRSS' is implemented so that to detect and simulate complicated water resources layouts through codding system and is sophisticated enough to understand almost any water resources schemes within the basin scale, which is not considered in the previous packages.
+License: GPL-3
+Repository: CRAN
+NeedsCompilation: no
+Packaged: 2017-11-09 14:07:57 UTC; Rizgar
+Date/Publication: 2017-11-09 18:39:18 UTC
