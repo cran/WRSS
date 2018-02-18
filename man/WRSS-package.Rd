@@ -6,15 +6,15 @@
 Water Resources System Simulator
 }
 \description{
-The WRSS is an object-oriented R package, which provides tools for simulation and analysis of large-scale supply hydrosystems. The package includes functions and methods for building, simulation, and visualization of water resources systems.
+The WRSS is an object-oriented R package, which provides tools for simulation and analysis of large-scale supply hydrosystems. The package includes functions and methods for building, simulation, and visualization of water resources components.
 
 }
 \details{
 \tabular{ll}{
 Package: \tab WRSS\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2017-11-06\cr
+Version: \tab 1.1\cr
+Date: \tab 2018-02-18\cr
 License: \tab GPL-3\cr
 }
 the package includes three major types of functions as follows:

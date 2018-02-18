@@ -14,7 +14,7 @@ addObjectToArea(area, object)
 An object inherited from \code{\link[WRSS]{createArea}}
 }
   \item{object}{
-An objects inherited from the any of following constructors: \code{\link[WRSS]{createAquifer}} , \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createJunction}}, \code{\link[WRSS]{createDiversion}}, and \code{\link[WRSS]{createDemandSite}}.
+An objects inherited from any of the following constructors: \code{\link[WRSS]{createAquifer}} , \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createJunction}}, \code{\link[WRSS]{createDiversion}}, and \code{\link[WRSS]{createDemandSite}}.
 }
 }
 
@@ -29,41 +29,12 @@ Rezgar Arabzadeh
 }
 
 \details{
-The examples included in this documentation show construction and simulation of primary features of a water resources system using \code{WRSS} library.
-The following figures present schematic configuration of resources and demand site nodes and their relationships using conceptual models:
+The examples included in this documentation show construction and simulation of primary features of a water resources system using \code{WRSS} package.
+The Figure below presents schematic layouts attributed to the examples at the rest of the page:
 
-Example 1:
+\if{html}{\figure{Fig.png}{options: width="60\%" alt="Figure: Fig.png"}}
+\if{latex}{\figure{Fig.pdf}{options: width=14cm}}
 
-\if{html}{\figure{ex1.png}{options: width="7\%" alt="Figure: ex1.png"}}
-\if{latex}{\figure{ex1.pdf}{options: width=3cm}}
-
-Example 2:
-
-\if{html}{\figure{ex2.png}{options: width="10\%" alt="Figure: ex2.png"}}
-\if{latex}{\figure{ex2.pdf}{options: width=6cm}}
-
-Example 3:
-
-\if{html}{\figure{ex3.png}{options: width="15\%" alt="Figure: ex3.png"}}
-\if{latex}{\figure{ex3.pdf}{options: width=6cm}}
-
-Example 4:
-
-\if{html}{\figure{ex4.png}{options: width="15\%" alt="Figure: ex4.png"}}
-\if{latex}{\figure{ex4.pdf}{options: width=6cm}}
-
-Example 5:
-
-\if{html}{\figure{ex5.png}{options: width="15\%" alt="Figure: ex5.png"}}
-\if{latex}{\figure{ex5.pdf}{options: width=6cm}}
-
-Example 6:
-
-\if{html}{\figure{ex6.png}{options: width="15\%" alt="Figure: ex6.png"}}
-\if{latex}{\figure{ex6.pdf}{options: width=5cm}}
-
-\if{html}{\figure{legend.png}{options: width="10\%" alt="Figure: legend.png"}}
-\if{latex}{\figure{legend.pdf}{options: width=4cm}}
 }
 
 \seealso{\code{\link[WRSS]{sim}}}

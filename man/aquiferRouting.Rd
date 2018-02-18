@@ -4,7 +4,7 @@
 base function for aquifer simulation
 }
 \description{
-Given a sort of demand(s), \code{aquiferRouting} function enable us to simulate a lumped and simple model of an unconfined aquifer under an optional givn recharge time series, \code{rechargeTS}, and specific yield, \code{Sy}.
+Given a sort of demand(s), \code{aquiferRouting} function simulates a lumped and simple model of an unconfined aquifer under an optional givn recharge time series, \code{rechargeTS}, and specific yield, \code{Sy}.
 }
 \usage{
 aquiferRouting(demand, priority = NA, area, capacity,
