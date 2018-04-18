@@ -13,8 +13,8 @@ The WRSS is an object-oriented R package, which provides tools for simulation an
 \tabular{ll}{
 Package: \tab WRSS\cr
 Type: \tab Package\cr
-Version: \tab 1.1\cr
-Date: \tab 2018-02-18\cr
+Version: \tab 1.2\cr
+Date: \tab 2018-04-18\cr
 License: \tab GPL-3\cr
 }
 the package includes three major types of functions as follows:
@@ -49,6 +49,8 @@ the package includes three major types of functions as follows:
    d) \code{\link[WRSS]{diversionRouting}}.  diversion operation
 
    e) \code{\link[WRSS]{sim}}.               simulates an objects inherited from class of \code{createArea}
+
+   f) \code{\link[WRSS]{rippl}}.             computes no-failure storage volume using the sequent peak algorithm(SPA)
 
 
 

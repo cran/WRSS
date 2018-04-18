@@ -1,6 +1,6 @@
 exportPattern("^[[:alpha:]]+")
 importFrom("grDevices", "getGraphicsEvent", "graphics.off","dev.new", "gray")
-importFrom("graphics", "plot","lines","hist","legend","par","axis", "barplot", "mtext")
+importFrom("graphics", "plot","lines","hist","legend","par","axis", "barplot", "mtext", "abline", "points", "text")
 importFrom("stats","runif","ecdf", "ts")
 importFrom("Hmisc","approxExtrap")
 S3method(plot,sim)

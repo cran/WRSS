@@ -1,7 +1,7 @@
 riverRouting <-
-function(demand     ,
-              priority        =NA ,
-              discharge      =NA  ,
+     function(demand        ,
+              priority   =NA,
+              discharge  =NA,
               simulation)
 {
    duration<-(simulation$end[1]-simulation$start[1])*12+(simulation$end[2]-simulation$start[2])
