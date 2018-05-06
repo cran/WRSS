@@ -13,12 +13,12 @@ function(name              ="Unknown"          ,
    
    if(any(c(is.null(demandParams$annualUseRate  ),
             is.null(demandParams$annualVariation),
-            is.null(demandParams$cropArea       ))) && is.na(demandTS))  
+            is.null(demandParams$cropArea       ))) && all(is.na(demandTS)))  
    {
       stop("missing demand parameter(s) !")
    }
 
-   if(is.null(demandTS))
+   if(all(is.na(demandTS)))
    {
       if(all.equal(sum(demandParams$annualVariation),100))
       {
@@ -37,14 +37,14 @@ function(name              ="Unknown"          ,
    }
    
    resault<-list()
-   operation<-createDemandSite.base(name=name,
-                                    label=label,
-                                    demandTS=demandTS,
-                                    demandParams=demandParams,
+   operation<-createDemandSite.base(name              =name              ,
+                                    label             =label             ,
+                                    demandTS          =demandTS          ,
+                                    demandParams      =demandParams      ,
                                     returnFlowFraction=returnFlowFraction,
-                                    suppliers=suppliers,
-                                    downstream=downstream,
-                                    priority=priority)
+                                    suppliers         =suppliers         ,
+                                    downstream        =downstream        ,
+                                    priority          =priority)
    resault$operation<-operation
    resault$call<-match.call()
    class(resault)<-'createDemandSite'

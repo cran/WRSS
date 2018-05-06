@@ -7,9 +7,15 @@ base function for class of \code{createReservoir}
  this function constructs an object from class of \code{createReservoir}, which is able to simulate a storage reservoir under given a sort of demand(s).
 }
 \usage{
-\method{createReservoir}{base}(name, label, priority, netEvaporation,
-                 downstream, initialStorage,
-                 seepageFraction, seepageCode, geometry)
+\method{createReservoir}{base}(name           ,
+                               label          ,
+                               priority       ,
+                               netEvaporation ,
+                               downstream     ,
+                               initialStorage ,
+                               seepageFraction,
+                               seepageCode    ,
+                               geometry)
 }
 \arguments{
   \item{name}{

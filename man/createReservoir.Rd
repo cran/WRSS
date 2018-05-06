@@ -51,5 +51,5 @@ An object from class of \code{createReservoir}
 \author{
 Rezgar Arabzadeh
 }
-\seealso{\code{\link[WRSS]{createReservoir}}}
+\seealso{\code{\link[WRSS]{addObjectToArea}}}
 \keyword{ list }

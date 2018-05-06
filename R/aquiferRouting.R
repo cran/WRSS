@@ -1,12 +1,12 @@
 aquiferRouting <-
-function(demand           ,
-              priority        =NA         ,
-              area                        ,
-              capacity                    ,
-              rechargeTS      =NA         ,
-              leakageFraction =NA         ,
-              initialStorage  =NA         ,
-              Sy                          ,
+function(demand                  ,
+              priority        =NA,
+              area               ,
+              capacity           ,
+              rechargeTS      =NA,
+              leakageFraction =NA,
+              initialStorage  =NA,
+              Sy                 ,
               simulation)
 {
    duration<-(simulation$end[1]-simulation$start[1])*12+(simulation$end[2]-simulation$start[2])

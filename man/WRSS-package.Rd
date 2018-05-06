@@ -13,8 +13,8 @@ The WRSS is an object-oriented R package, which provides tools for simulation an
 \tabular{ll}{
 Package: \tab WRSS\cr
 Type: \tab Package\cr
-Version: \tab 1.2\cr
-Date: \tab 2018-04-18\cr
+Version: \tab 1.3\cr
+Date: \tab 2018-05-06\cr
 License: \tab GPL-3\cr
 }
 the package includes three major types of functions as follows:
@@ -34,7 +34,9 @@ the package includes three major types of functions as follows:
 
    f) \code{\link[WRSS]{createAquifer}}.     constructor for aquifers
 
-   g) \code{\link[WRSS]{addObjectToArea}}.   adds objects form mentioned above constructors to a basin inherited from class of \code{createBasin}
+   g) \code{\link[WRSS]{createDemandSite}}.  constructor for demand sites
+
+   h) \code{\link[WRSS]{addObjectToArea}}.   adds objects form mentioned above constructors to a basin inherited from class of \code{createBasin}
                                                 
 
                                                 

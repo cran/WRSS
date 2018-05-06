@@ -85,7 +85,7 @@ function(area,object)
 
    if(class(object)=="createDemandSite")
    {
-      if(is.na(object$operation$demandTS))
+      if(all(is.na(object$operation$demandTS)))
       {
          object$operation$demandTS<-rep(object$operation$demandParams$annualUseRate  *
                                         object$operation$demandParams$annualVariation*
@@ -95,7 +95,7 @@ function(area,object)
          if(length(object$operation$demandTS)!=simulationPeriod)
           {
             stop("The simulation period and demand time series simulation period miss match !")
-         }
+          }
       }
       object$operation$outflow<-matrix(0,simulationPeriod)
       object$operation$inflow<-matrix(0,simulationPeriod)

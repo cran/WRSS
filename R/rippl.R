@@ -25,6 +25,8 @@ rippl<-function(discharge,target,plot=TRUE)
    }else{
       ind_min<-c(1,ind_min)
    }
+   ind_min<-ind_min[which(duplicated(ind_min)==FALSE)]
+   ind_max<-ind_max[which(duplicated(ind_max)==FALSE)]
    cap<-rep(NA,length(ind_min))
    for(i in length(ind_min):2)
    {
