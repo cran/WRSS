@@ -15,14 +15,11 @@ an object inherited from class of \code{createArea}.
 }
 }
 \value{
-an object inherited from class of \code{sim} and including features as list(s), which are accessable as follows:
+an object inherited from class of \code{sim}.
+Address keys to access components built-in an object inherited from class of \code{sim} is as figure below:
 
-reservoirs:  $operation$operation$reservoirs
-rivers:      $operation$operation$rivers
-junctions:   $operation$operation$junctions
-aquifers:    $operation$operation$aquifers
-diversions:  $operation$operation$diversions
-demands:     $operation$operation$demands
+\if{html}{\figure{Fig1.png}{options: width="60\%" alt="Figure: Fig1.png"}}
+\if{latex}{\figure{Fig1.pdf}{options: width=14cm}}
 }
 \references{
 Loucks, Daniel P., et al. Water resources systems planning and management: an introduction to methods, models and applications. Paris: Unesco, 2005.

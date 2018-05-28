@@ -13,8 +13,8 @@ The WRSS is an object-oriented R package, which provides tools for simulation an
 \tabular{ll}{
 Package: \tab WRSS\cr
 Type: \tab Package\cr
-Version: \tab 1.3\cr
-Date: \tab 2018-05-06\cr
+Version: \tab 1.4\cr
+Date: \tab 2018-05-28\cr
 License: \tab GPL-3\cr
 }
 the package includes three major types of functions as follows:
@@ -60,7 +60,9 @@ the package includes three major types of functions as follows:
 
    a) \code{\link[WRSS]{plot.sim}}.          plots the results of simulations for an object inherited from class of \code{sim}
 
-   b) \code{\link[WRSS]{risk}}.              computes risk-based criateria for an object inherited from class of \code{sim}
+   b) \code{\link[WRSS]{plot.createArea}}.   plots an object from class of \code{createArea}
+
+   c) \code{\link[WRSS]{risk}}.              computes risk-based criateria for an object inherited from class of \code{sim}
 
 }
 \author{

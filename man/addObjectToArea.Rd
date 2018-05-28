@@ -62,6 +62,7 @@ area<-addObjectToArea(area,R)
 area<-addObjectToArea(area,Res)
 area<-addObjectToArea(area,D)
 \dontrun{
+plot(area)
 simulated<-sim(area)
 plot(simulated)
 }
@@ -93,6 +94,7 @@ area<-addObjectToArea(area,Res)
 area<-addObjectToArea(area,D1)
 area<-addObjectToArea(area,D2)
 \dontrun{
+plot(area)
 simulated<-sim(area)
 plot(simulated)
 }
@@ -143,6 +145,7 @@ area<-addObjectToArea(area,D2)
 area<-addObjectToArea(area,D3)
 area<-addObjectToArea(area,J1)
 \dontrun{
+plot(area)
 simulated<-sim(area)
 plot(simulated)
 }
@@ -192,6 +195,7 @@ area<-addObjectToArea(area,D2)
 area<-addObjectToArea(area,D3)
 area<-addObjectToArea(area,J1)
 \dontrun{
+plot(area)
 simulated<-sim(area)
 plot(simulated)
 }
@@ -248,6 +252,7 @@ area<-addObjectToArea(area,D3)
 area<-addObjectToArea(area,D4)
 area<-addObjectToArea(area,J1)
 \dontrun{
+plot(area)
 simulated<-sim(area)
 plot(simulated)
 }
@@ -323,6 +328,7 @@ area<-addObjectToArea(area,J10)
 area<-addObjectToArea(area,J11)
 simulated<-sim(area)
 \dontrun{
+plot(area)
 plot(simulated)
 }
 }
