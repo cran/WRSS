@@ -2,8 +2,8 @@ createDemandSite.default <-
 function(name              ="Unknown"          ,
          label                                 ,
          demandTS          =NA                 ,
-         demandParams=list(annualUseRate=NULL  ,
-                           annualVariation=NULL,
+         demandParams=list(waterUseRate=NULL   ,
+                           waterVariation=NULL ,
                            cropArea=NULL)      ,
          returnFlowFraction =0.0               ,
          suppliers                             ,
@@ -11,20 +11,20 @@ function(name              ="Unknown"          ,
          priority          =NA)
 {
    
-   if(any(c(is.null(demandParams$annualUseRate  ),
-            is.null(demandParams$annualVariation),
+   if(any(c(is.null(demandParams$waterUseRate  ),
+            is.null(demandParams$waterVariation),
             is.null(demandParams$cropArea       ))) && all(is.na(demandTS)))  
    {
       stop("missing demand parameter(s) !")
    }
-
+ 
    if(all(is.na(demandTS)))
    {
-      if(all.equal(sum(demandParams$annualVariation),100))
+      if(sum(demandParams$waterVariation)!=100)
       {
-         cat("Sum of annual variation is OK!")
-      }else{
-         stop("Sum of annual variation must be equal to 100 % !")
+         warning('waterVariation is adjusted! the sum of it must be 100 %')
+         demandParams$waterVariation<-demandParams$waterVariation+
+                                      demandParams$waterVariation/sum(demandParams$waterVariation)*(100-sum(demandParams$waterVariation))
       }
    }
    if(missing(suppliers))

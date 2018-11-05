@@ -7,32 +7,44 @@ function(area,object)
    }
    if(missing(object))
    {
-      stop("The object you want to be added to area is missing !")
+      stop("object to be added to area is missing!")
    }
    
-   start<-area$operation$simulatio$start
-   end<-area$operation$simulatio$end
-   simulationPeriod<-sum((end-start)*c(12,1))
+   simulationSteps<-length(area$operation$simulatio$dates)
+   dates<-area$operation$simulatio$dates
 
    if(class(object)=="createAquifer")
    {
-      object$operation$outflow<-matrix(0,simulationPeriod)
+      object$operation$outflow<-data.frame(outflow=rep(0,simulationSteps))
+      rownames(object$operation$outflow)<-dates
       if(!all(is.na(object$operation$rechargeTS)))
       {
-         if(length(object$operation$rechargeTS)==simulationPeriod)
+         if(length(object$operation$rechargeTS)==simulationSteps)
          {
-            rechargeTS<-as.matrix(object$operation$rechargeTS)
+            rechargeTS<-data.frame(object$operation$rechargeTS)
             colnames(rechargeTS)<-'natural recharge'
+            rownames(rechargeTS)<-dates
             object$operation$inflow<-rechargeTS
          }
-         if(length(object$operation$rechargeTS)!=simulationPeriod)
+         if(length(object$operation$rechargeTS)!=simulationSteps)
          {
-            stop("aquifer's recharge time series doesn't match with simulation interval!")
+            if(length(object$operation$rechargeTS)>simulationSteps) rechargeTS<-object$operation$rechargeTS[1:simulationSteps]
+            if(length(object$operation$rechargeTS)<simulationSteps)
+            {
+               rechargeTS<-rep(0,simulationSteps)
+               rechargeTS[1:length(object$operation$rechargeTS)]<-object$operation$rechargeTS
+            }
+            rechargeTS<-data.frame(rechargeTS)
+            colnames(rechargeTS)<-'natural recharge'
+            rownames(rechargeTS)<-dates
+            object$operation$inflow<-rechargeTS
+            warning('recharge flow vector is reshaped! miss matched dimenssion with the number of simulation steps!')
          }
       }else{
-         inflow<-as.matrix(0,simulationPeriod)
-         colnames(inflow)<-'zero flow'
-         object$operation$inflow<-inflow
+         rechargeTS<-data.frame(rep(0,simulationSteps))
+         colnames(rechargeTS)<-'zero flow'
+         rownames(rechargeTS)<-dates
+         object$operation$inflow<-rechargeTS
       }
       object$operation$rechargeTS<-NULL
       i<-length(area$operation$aquifers)+1
@@ -41,44 +53,79 @@ function(area,object)
 
    if(class(object)=="createRiver")
    {
-      object$operation$outflow<-matrix(0,simulationPeriod)
-      if(length(object$operation$discharge)==simulationPeriod)
+      object$operation$outflow<-data.frame(outflow=rep(0,simulationSteps))
+      rownames(object$operation$outflow)<-dates
+      if(length(object$operation$discharge)==simulationSteps)
       {
-          riverDischarge            <-as.matrix(object$operation$discharge)
-          colnames(riverDischarge)  <- 'river discharge'
+          riverDischarge            <-data.frame(discharge=object$operation$discharge)
+          rownames(riverDischarge)  <-dates
           object$operation$inflow   <-riverDischarge
-          object$operation$discharge<-NULL
       }else{
-          stop("source discharge time series doesn't match with simulation interval!")
+          if(length(object$operation$discharge)>simulationSteps) riverDischarge<-object$operation$discharge[1:simulationSteps]
+          if(length(object$operation$discharge)<simulationSteps)
+          {
+             riverDischarge<-rep(0,simulationSteps)
+             riverDischarge[1:length(object$operation$discharge)]<-object$operation$discharge
+          }
+          riverDischarge<-data.frame(discharge=riverDischarge)
+          rownames(riverDischarge)<-dates
+          object$operation$inflow<-riverDischarge
+          warning('recharge flow vector is reshaped! miss matched dimenssion with the number of simulation steps!')
       }
+      object$operation$discharge<-NULL
       i<-length(area$operation$rivers)+1
       area$operation$rivers[[i]]<-object
    }
 
    if(class(object)=="createReservoir")
    {
-      if(length(object$operation$netEvaporation)!=simulationPeriod)
+      if(!all(is.na(object$operation$netEvaporation)))
       {
-         stop("source net ET time series doesn't match with simulation interval!")
+         if(length(object$operation$netEvaporation)==simulationSteps)
+         {
+            NET<-object$operation$netEvaporation
+         }else{
+            if(length(object$operation$netEvaporation)>simulationSteps)
+            {
+               NET<-object$operation$netEvaporation[1:simulationSteps]
+            }
+            if(length(object$operation$netEvaporation)<simulationSteps)
+            {
+               temp<-rep(0,simulationSteps)
+               temp[1:length(object$operation$netEvaporation)]<-object$operation$netEvaporation
+               NET<-temp
+            }
+            warning('net evaporation vector is reshaped! miss matched dimenssion with the number of simulation steps!')
+         }
+      }else{
+         NET<-rep(0,simulationSteps)
       }
-      object$operation$outflow<-matrix(0,simulationPeriod)
-      object$operation$inflow<-matrix(0,simulationPeriod)
+      NET<-data.frame(netEvaporation=NET);rownames(NET)<-dates
+      object$operation$netEvaporation<-NET
+      object$operation$outflow<-data.frame(outflow=rep(0,simulationSteps))
+      object$operation$inflow <-data.frame(inflow =rep(0,simulationSteps))
+      rownames(object$operation$outflow)    <-dates
+      rownames(object$operation$inflow)     <-dates
       i<-length(area$operation$reservoirs)+1
       area$operation$reservoirs[[i]]<-object
    }
 
    if(class(object)=="createDiversion")
    {
-      object$operation$outflow<-matrix(0,simulationPeriod)
-      object$operation$inflow<-matrix(0,simulationPeriod)
+      object$operation$outflow<-data.frame(outflow=rep(0,simulationSteps))
+      object$operation$inflow<-data.frame(inflow=rep(0,simulationSteps))
+      rownames(object$operation$outflow)    <-dates
+      rownames(object$operation$inflow)     <-dates
       i<-length(area$operation$diversions)+1
       area$operation$diversions[[i]]<-object
    }
 
    if(class(object)=="createJunction")
    {
-      object$operation$outflow<-matrix(0,simulationPeriod)
-      object$operation$inflow<-matrix(0,simulationPeriod)
+      object$operation$outflow<-data.frame(outflow=rep(0,simulationSteps))
+      object$operation$inflow<-data.frame(inflow=rep(0,simulationSteps))
+      rownames(object$operation$outflow)    <-dates
+      rownames(object$operation$inflow)     <-dates
       i<-length(area$operation$junctions)+1
       area$operation$junctions[[i]]<-object
    }
@@ -87,18 +134,30 @@ function(area,object)
    {
       if(all(is.na(object$operation$demandTS)))
       {
-         object$operation$demandTS<-rep(object$operation$demandParams$annualUseRate  *
-                                        object$operation$demandParams$annualVariation*
-                                        object$operation$demandParams$cropArea/100,
-                                        floor(simulationPeriod/12)+1)[1:simulationPeriod]
+         demandTS<-rep(object$operation$demandParams$waterUseRate*
+                       object$operation$demandParams$waterVariation*
+                       object$operation$demandParams$cropArea/100,
+                       floor(simulationSteps/length(object$operation$demandParams$waterVariation))+1)[1:simulationSteps]
       }else{
-         if(length(object$operation$demandTS)!=simulationPeriod)
+         if(length(object$operation$demandTS)!=simulationSteps)
           {
-            stop("The simulation period and demand time series simulation period miss match !")
+             if(length(object$operation$demandTS)>simulationSteps)
+             {
+                demandTS-object$operation$demandTS[1:simulationSteps]
+             }
+             if(length(object$operation$demandTS)<simulationSteps)
+             {
+                demandTS<-rep(object$operation$demandT,floor(simulationSteps/length(object$operation$demandTS))+1)[1:simulationSteps]
+             }
+             warning('demand vector is reshaped and replicated! miss matched dimenssion with the number of simulation steps!')
           }
       }
-      object$operation$outflow<-matrix(0,simulationPeriod)
-      object$operation$inflow<-matrix(0,simulationPeriod)
+      demandTS<-data.frame(demand=demandTS); rownames(demandTS)    <-dates
+      object$operation$demandTS<-demandTS
+      object$operation$outflow<-data.frame(outflow=rep(0,simulationSteps))
+      object$operation$inflow<-data.frame(inflow=rep(0,simulationSteps))
+      rownames(object$operation$outflow)    <-dates
+      rownames(object$operation$inflow)     <-dates
       i<-length(area$operation$demands)+1
       area$operation$demands[[i]]<-object
    }

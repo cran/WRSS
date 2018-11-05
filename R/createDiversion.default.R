@@ -1,5 +1,5 @@
 createDiversion.default <-
-function(name         ="junc1"  ,
+function(name         ="Div1"  ,
          label                  ,
          capacity               ,
          divertTo               ,

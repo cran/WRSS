@@ -26,7 +26,7 @@ risk<-function (object, s.const = 0.95)
         return(Criaterian)
     }
     for (i in 1:nDem) {
-        D <- object$operation$operation$demands[[i]]$operation$demandTS
+        D <- object$operation$operation$demands[[i]]$operation$demandTS$demand
         R <- apply(object$operation$operation$demands[[i]]$operation$inflow,1, sum)
         R <- ifelse(R > D, D, R)
         C[, i] <- Base(Re = R, De = D)

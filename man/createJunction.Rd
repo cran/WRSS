@@ -10,15 +10,9 @@ this function constructs an object from class of \code{createDiversion}, acting 
 createJunction(name, label, downstream)
 }
 \arguments{
-  \item{name}{
-(optional) A string: the name of the junction
-}
-  \item{label}{
-An individual label assigned to the object as a reference code.
-}
-  \item{downstream}{
-The code of an object which outflow volume pours to it.
-}
+  \item{name}{(optional) A string: the name of the junction}
+  \item{label}{An individual label assigned to the object as a reference code.}
+  \item{downstream}{The code of an object which outflow volume pours to it.}
 }
 \value{
 An object from class of \code{createJunction}

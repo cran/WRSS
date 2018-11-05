@@ -27,30 +27,36 @@ Rezgar Arabzadeh
 }
 \seealso{\code{\link[WRSS]{sim}}}
 \examples{
-R<-createRiver(name="Riv1",label=1,downstream=2,discharge=rnorm(120,4.5,1.5))
-Res<-createReservoir(name="R1",label=2,priority=1,
+R<-createRiver(name="Riv1",label=1,downstream=2,discharge=rnorm(120,500,4))
+Res<-createReservoir(name="R1",label=2,type='storage',
                      netEvaporation=rnorm(120,0.5,0.1),downstream =NA,
                      geometry=list(deadStorage= 10,
-                                   capacity= 20,
-                                   ratingCurve= cbind(seq(0,90,10),seq(0,9,1))))
-annualVariation<-round(sin(seq(0,pi,length.out=12))*
+                                   capacity= 700,
+                                   storageAreaTable= cbind(seq(0,900,100),seq(0,9,1))))
+waterVariation<-round(sin(seq(0,pi,length.out=12))*
                        100/sum(sin(seq(0,pi,length.out=12))))
 D1<-createDemandSite(name ="D1",label=5,demandTS=NA,
-                     demandParams=list(annualUseRate=0.01,
-                                       annualVariation=annualVariation,
-                                       cropArea=3000),
+                     demandParams=list(waterUseRate=5,
+                                       waterVariation=waterVariation,
+                                       cropArea=500),
                      suppliers=2,downstream=NA,priority=1)
 D2<-createDemandSite(name ="D2",label=6,demandTS=NA,
-                     demandParams=list(annualUseRate=0.01,
-                                       annualVariation=annualVariation,
-                                       cropArea=2000),
+                     demandParams=list(waterUseRate=5,
+                                       waterVariation=waterVariation,
+                                       cropArea=500),
                      suppliers=2,downstream=NA,priority=2)
+D3<-createDemandSite(name ="D3",label=7,demandTS=NA,
+                     demandParams=list(waterUseRate=5,
+                                       waterVariation=waterVariation,
+                                       cropArea=500),
+                     suppliers=2,downstream=NA,priority=3)
 area<-createArea(name="unknown",location="unknown",
-                 simulation=list(start=c(1900,1),end=c(1910,01)))
+                 simulation=list(start='2000-01-01',end='2009-12-29',interval='month'))
 area<-addObjectToArea(area,R)
 area<-addObjectToArea(area,Res)
 area<-addObjectToArea(area,D1)
 area<-addObjectToArea(area,D2)
+area<-addObjectToArea(area,D3)
 risk(sim(area))
 }
 \keyword{ matrix }

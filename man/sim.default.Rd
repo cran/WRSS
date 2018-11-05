@@ -10,9 +10,7 @@ default function for class of \code{sim}
 \method{sim}{default}(object)
 }
 \arguments{
-  \item{object}{
-an object inherited from class of \code{createArea}.
-}
+  \item{object}{an object inherited from class of \code{createArea}.}
 }
 \value{
 an object inherited from class of \code{sim} and including features as list(s), which are accessable as follows:

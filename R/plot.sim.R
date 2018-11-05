@@ -21,17 +21,57 @@ function(x,...)
    nDiv<-length(x$operation$operation$diversions)
    nDem<-length(x$operation$operation$demands)
    simulation<- x$operation$operation$simulation
-   duration<-sum((simulation$end-simulation$start)*c(12,1))
-   months<-c('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')
-   
-   getMonthlyMean<-function(data)
+   dates<-seq(as.Date(simulation$start),as.Date(simulation$end),simulation$interval)
+
+   getCycleMean<-function(data)
    {
-      mat<-t(matrix(NA,(floor(length(data)/12)+1),12))
-      mat[simulation$start[2]:(simulation$start[2]+duration-1)]<-data
-      mat<-t(mat)
-      out<-apply(mat,2,mean,na.rm=TRUE)
-      names(out)<-months
+      if(simulation$interval=='month')
+      {
+         mat<-t(matrix(NA,(floor(length(data)/12)+1),12))
+         m<-months(seq(as.Date('2000-01-01'),to=as.Date('2000-12-01'),'month'))
+         start<-which(months(as.Date(simulation$start))==m)
+         if(start==0) start<-1
+         mat[start:(start+length(dates)-1)]<-data
+         mat<-t(mat)
+         out<-apply(mat,2,mean,na.rm=TRUE)
+         names(out)<-month.abb
+      }
+      if(simulation$interval=='week')
+      {
+         start<-floor(as.numeric(as.Date(simulation$start)-as.Date(paste((strsplit(simulation$start,'-')[[1]])[1],'-','01','-','01',sep='')))/7)+1
+         if(start==0) start<-1
+         mat<-t(matrix(NA,(floor(length(data)/53)+1),53))
+         mat[start:(start+length(dates)-1)]<-data
+         mat<-t(mat)
+         out<-apply(mat,2,mean,na.rm=TRUE)
+         names(out)<-paste('week','-',1:length(out),sep='')
+      }
+      if(simulation$interval=='day')
+      {
+         start<-as.numeric(as.Date(simulation$start)-as.Date(paste((strsplit(simulation$start,'-')[[1]])[1],'-','01','-','01',sep='')))
+         if(start==0) start<-1
+         mat<-t(matrix(NA,(floor(length(data)/366)+1),366))
+         mat[start:(start+length(dates)-1)]<-data
+         mat<-t(mat)
+         out<-apply(mat,2,mean,na.rm=TRUE)
+         names(out)<-paste('day','-',1:length(out),sep='')
+      }
+      NANs<-which(is.nan(out))
+      if(length(NANs)>0) out<-out[-NANs]
       return(out)
+   }
+   labelRemover<-function(data)
+   {
+      if(simulation$interval=='day') CF<-363
+      if(simulation$interval=='week') CF<-51
+      if(simulation$interval=='month') CF<-10
+      intervals<-floor(length(Storage)*18/CF+2)+2
+      names<-colnames(data)
+      labels<-rep(NA,length(names))
+      selctedLabels<-round(seq(1,ncol(data),length.out=intervals))
+      labels[selctedLabels]<-names[selctedLabels]
+      colnames(data)<-labels
+      return(data)
    }
 
    if(nRes>0)
@@ -41,17 +81,18 @@ function(x,...)
          inflow  <-x$operation$operation$reservoirs[[i]]$operation$inflow
          outflow <-x$operation$operation$reservoirs[[i]]$operation$outflow
          capacity<-x$operation$operation$reservoirs[[i]]$operation$geometry$capacity
-         Storage    <-getMonthlyMean(x$operation$operation$reservoirs[[i]]$operation$sim_result[,1])
-         Spill      <-getMonthlyMean(x$operation$operation$reservoirs[[i]]$operation$sim_result[,2])
-         Evaporation<-getMonthlyMean(x$operation$operation$reservoirs[[i]]$operation$sim_result[,3])
-         Release    <-getMonthlyMean(x$operation$operation$reservoirs[[i]]$operation$sim_result[,4])
-         Inflow     <-getMonthlyMean(apply(x$operation$operation$reservoirs[[i]]$operation$inflow,1,sum))
-         Storage    <-Storage-Inflow
+         Storage    <-getCycleMean(x$operation$operation$reservoirs[[i]]$operation$sim_result$storage)
+         Spill      <-getCycleMean(x$operation$operation$reservoirs[[i]]$operation$sim_result$spill)
+         Evaporation<-getCycleMean(x$operation$operation$reservoirs[[i]]$operation$sim_result$loss)
+         Release    <-getCycleMean(apply(x$operation$operation$reservoirs[[i]]$operation$outflow,1,sum))
+         Inflow     <-getCycleMean(apply(x$operation$operation$reservoirs[[i]]$operation$inflow,1,sum))
          title<-x$operation$operation$reservoirs[[i]]$operation$name
          bars<-t(cbind(Evaporation,Release,Storage,Inflow,Spill))
-         ylim<-c(0,max(apply(bars,2,sum)))*(1+nrow(bars)*0.05)
+         bars<-labelRemover(bars)
+         Storage<-Storage-Inflow
+         ylim<-c(0,max(apply(bars,2,sum),na.rm=TRUE))*(1+nrow(bars)*0.05)
          barplot(bars,las=2,col=1:5,ylab='Volume (MCM)',ylim=ylim,main=title)
-         lines(0:15,rep(capacity,16),col=6,typ='o',lwd=2,pch=19)
+         lines(0:length(dates),rep(capacity,length(dates)+1),col=6,typ='o',lwd=2,pch=19)
          legend('top',
                 legend=c('evaporation','release','storage','inflow','spill','capacity'),
                 ncol=3,
@@ -73,15 +114,16 @@ function(x,...)
       {
          inflow <-x$operation$operation$rivers[[i]]$operation$inflow
          outflow<-x$operation$operation$rivers[[i]]$operation$outflow
-         I<-rep(NA,12)
-         O<-rep(NA,12)
-         for(j in 1:ncol(inflow)) {I<-cbind(I,getMonthlyMean(inflow [,j]))};I<-I[,-1,drop=FALSE]
-         for(j in 1:ncol(outflow)){O<-cbind(O,getMonthlyMean(outflow[,j]))};O<-O[,-1,drop=FALSE]
+         I<-rep(NA,length(getCycleMean(inflow [,1])))
+         O<-rep(NA,length(getCycleMean(inflow [,1])))
+         for(j in 1:ncol(inflow)) {I<-cbind(I,getCycleMean(inflow [,j]))};I<-I[,-1,drop=FALSE]
+         for(j in 1:ncol(outflow)){O<-cbind(O,getCycleMean(outflow[,j]))};O<-O[,-1,drop=FALSE]
          I<-t(I);O<-t(O)
          ylim<-c(0,max(apply(I,2,sum),apply(O,2,sum)))*(1+(ncol(inflow)+ncol(outflow))*0.1)
          title<-x$operation$operation$rivers[[i]]$operation$name
-         barplot(I,ylim=ylim,ylab='Volume (MCM)',las=2,main=title,col=gray((1:ncol(inflow))/(1.2*ncol(inflow))))
-         for(j in 1:nrow(O)){lines(seq(.7,13.9,1.2),O[j,],typ='o',pch=21,bg='white',col=j+1)}
+         I<-labelRemover(I)
+         middleOfBars<-barplot(I,ylim=ylim,ylab='Volume (MCM)',las=2,main=title,col=gray((1:ncol(inflow))/(1.2*ncol(inflow))))
+         for(j in 1:nrow(O)){lines(middleOfBars,O[j,],typ='o',pch=21,bg='white',col=j+1)}
          legend('top',
                 legend=c(colnames(inflow),colnames(outflow)),
                 ncol=2,
@@ -103,16 +145,16 @@ function(x,...)
          inflow <-x$operation$operation$aquifers[[i]]$operation$inflow
          outflow<-x$operation$operation$aquifers[[i]]$operation$outflow
          storage<-x$operation$operation$aquifers[[i]]$operation$storage
-         I<-rep(NA,12)
-         O<-rep(NA,12)
-         for(j in 1:ncol(inflow)) {I<-cbind(I,getMonthlyMean(inflow [,j]))};I<-I[,-1,drop=FALSE]
-         for(j in 1:ncol(outflow)){O<-cbind(O,getMonthlyMean(outflow[,j]))};O<-O[,-1,drop=FALSE]
+         I<-rep(NA,length(getCycleMean(inflow [,1])))
+         O<-rep(NA,length(getCycleMean(inflow [,1])))
+         for(j in 1:ncol(inflow)) {I<-cbind(I,getCycleMean(inflow [,j]))};I<-I[,-1,drop=FALSE]
+         for(j in 1:ncol(outflow)){O<-cbind(O,getCycleMean(outflow[,j]))};O<-O[,-1,drop=FALSE]
          I<-t(I);O<-t(O)
-         
          ylim<-c(0,max(apply(I,2,sum),apply(O,2,sum)))*(1+(ncol(inflow)+ncol(outflow))*0.1)
          title<-x$operation$operation$aquifers[[i]]$operation$name
-         barplot(I,ylim=ylim,ylab='Volume (MCM)',las=2,main=title,col=gray((1:ncol(inflow))/(1.2*ncol(inflow))))
-         for(j in 1:nrow(O)){lines(seq(.7,13.9,1.2),O[j,],typ='o',pch=21,bg='white',col=j+1)}
+         I<-labelRemover(I)
+         middleOfBars<-barplot(I,ylim=ylim,ylab='Volume (MCM)',las=2,main=title,col=gray((1:ncol(inflow))/(1.2*ncol(inflow))))
+         for(j in 1:nrow(O)){lines(middleOfBars,O[j,],typ='o',pch=21,bg='white',col=j+1)}
          legend('top',
                 legend=c(colnames(inflow),colnames(outflow)),
                 ncol=2,
@@ -121,16 +163,15 @@ function(x,...)
                 col=c(1:ncol(inflow),2:(ncol(outflow)+1)),
                 border=c(rep(1,ncol(inflow)),rep(NA,ncol(outflow))),
                 box.lwd=0,box.col=NA)
-
          inflow <-apply(inflow,1,sum)
          outflow<-apply(outflow,1,sum)
          ylim<-c(0,max(inflow+outflow))*1.2
          par(mar = c(5, 4, 4, 4) + 0.3)
-         inflow<-ts(inflow,start=simulation$start,frequency=12)
-         outflow<-ts(outflow,start=simulation$start,frequency=12)
-         barplot(rbind(inflow,outflow),col=gray(c(1,3)/4),ylab='Volume of inflow & outflow (MCM)',xlab='Time',ylim=ylim)
+         IO<-rbind(inflow,outflow)
+         IO<-labelRemover(IO)
+         middleOfBars<-barplot(IO,las=2,col=gray(c(1,3)/4),ylab='Volume of inflow & outflow (MCM)',ylim=ylim)
          par(new = TRUE)
-         plot(storage,axes = FALSE, bty = "n", xlab = "", ylab = "",typ='o',col=2,pch=21,bg='white')
+         plot(middleOfBars,storage$storage,axes = FALSE, bty = "n", xlab = "", ylab = "",typ='o',col=2,pch=21,bg='white')
          axis(side=4, at = pretty(range(storage)))
          mtext("Aquifer storage (MCM)", side=4, line=3)
          legend('top',
@@ -153,16 +194,18 @@ function(x,...)
          par(dev.new(width = 16, height = 8),mfrow=c(1,2))
          inflow  <-x$operation$operation$diversions[[i]]$operation$inflow
          outflow <-x$operation$operation$diversions[[i]]$operation$outflow
-         diverted<-x$operation$operation$diversions[[i]]$operation$sim_result$diverted
-         overflow<-x$operation$operation$diversions[[i]]$operation$sim_result$overflow
-         I<-rep(NA,12)
-         O<-getMonthlyMean(overflow)
-         D<-getMonthlyMean(diverted)
-         for(j in 1:ncol(inflow)) {I<-cbind(I,getMonthlyMean(inflow [,j]))};I<-I[,-1,drop=FALSE]
+         diverted<-x$operation$operation$diversions[[i]]$operation$sim_result$diverted$diverted
+         overflow<-x$operation$operation$diversions[[i]]$operation$sim_result$overflow$overflow
+         I<-rep(NA,length(getCycleMean(inflow [,1])))
+         O<-getCycleMean(overflow)
+         D<-getCycleMean(diverted)
+         for(j in 1:ncol(inflow)) {I<-cbind(I,getCycleMean(inflow [,j]))};I<-I[,-1,drop=FALSE]
          I<-apply(I,1,sum)
          ylim<-c(0,max(apply(rbind(I,O,D),2,sum)))*1.1
          title<-x$operation$operation$diversions[[i]]$operation$name
-         barplot(rbind(I,O,D),las=2, ylab=c('Volume (MCM)'),ylim=ylim,col=gray(1:3/4),main=title,)
+         IOD<-rbind(I,O,D)
+         IOD<-labelRemover(IOD)         
+         barplot(IOD,las=2, ylab=c('Volume (MCM)'),ylim=ylim,col=gray(1:3/4),main=title,)
          legend('top',
                 legend=c('inflow','outflow','diverted'),
                 ncol=3,
@@ -181,14 +224,15 @@ function(x,...)
       for(i in 1:nJun)
       {
          inflow  <-x$operation$operation$junctions[[i]]$operation$inflow
-         outflow <-x$operation$operation$junctions[[i]]$operation$outflow
-         I<-rep(NA,12)
-         for(j in 1:ncol(inflow)) {I<-cbind(I,getMonthlyMean(inflow [,j]))};I<-I[,-1,drop=FALSE]
-         O<-getMonthlyMean(outflow)
+         outflow <-x$operation$operation$junctions[[i]]$operation$outflow[,1]
+         I<-rep(NA,length(getCycleMean(inflow [,1])))
+         for(j in 1:ncol(inflow)) {I<-cbind(I,getCycleMean(inflow [,j]))};I<-I[,-1,drop=FALSE]
+         O<-getCycleMean(outflow)
          ylim<-c(0,max(I,O))*(1+0.05*(ncol(I)+1))
          title<-x$operation$operation$junctions[[i]]$operation$name
+         I<-t(labelRemover(t(I)))
          plot(I[,1],xaxt='n',ylab='Volume (MCM)',ylim=ylim,typ='o',xlab='',pch=0,main=title)
-         axis(1, at=1:12, labels=months,las=2)
+         axis(1, at=1:nrow(I),labels=rownames(I),las=2)
          if(ncol(inflow)>1)
          {
             for(j in 2:ncol(I))
@@ -214,20 +258,21 @@ function(x,...)
       for(i in 1:nDem)
       {
          outflow <-x$operation$operation$demands[[i]]$operation$outflow
-         demandTS<-getMonthlyMean(x$operation$operation$demands[[i]]$operation$demandTS)
+         demandTS<-getCycleMean(x$operation$operation$demands[[i]]$operation$demandTS$demand)
          if(ncol(outflow)>1)
          {
             inflow  <-x$operation$operation$demands[[i]]$operation$inflow
             out<-as.matrix(apply(outflow,1,sum))
             colnames(out)<-colnames(outflow)[1]
-            O<-getMonthlyMean(out)
-            I<-rep(NA,12)
-            for(j in 1:ncol(inflow)) {I<-cbind(I,getMonthlyMean(inflow [,j]))};I<-t(I[,-1,drop=FALSE])
+            O<-getCycleMean(out)
+            I<-rep(NA,length(getCycleMean(inflow [,1])))
+            for(j in 1:ncol(inflow)) {I<-cbind(I,getCycleMean(inflow [,j]))};I<-t(I[,-1,drop=FALSE])
             ylim<-c(0,max(apply(rbind(I,O),2,sum),demandTS))*1.1
             title<-x$operation$operation$demands[[i]]$operation$name
             col<-gray(1:(ncol(inflow)+1)/(ncol(inflow)+1))
-            barplot(I,las=2, ylab=c('Volume (MCM)'),ylim=ylim,main=title,col=col[1:ncol(inflow)])
-            lines(seq(0.7,13.9,1.2),demandTS,typ='o',pch=21,bg='white',col=2)
+            I<-labelRemover(I)
+            middleOfBars<-barplot(I,las=2, ylab=c('Volume (MCM)'),ylim=ylim,main=title,col=col[1:ncol(inflow)])
+            lines(middleOfBars,demandTS,typ='o',pch=21,bg='white',col=2)
             barplot(O,las=2, ylab=c('Volume (MCM)'),ylim=ylim,main=title,col=col[length(col)],add=TRUE)
             legend('top',
                    legend=c(colnames(inflow),colnames(outflow)[2],'demand'),
@@ -239,13 +284,14 @@ function(x,...)
                    box.lwd=0,box.col=NA)
          }else{
             inflow  <-x$operation$operation$demands[[i]]$operation$inflow
-            I<-rep(NA,12)
-            for(j in 1:ncol(inflow)) {I<-cbind(I,getMonthlyMean(inflow [,j]))};I<-t(I[,-1,drop=FALSE])
+            I<-rep(NA,length(getCycleMean(inflow [,1])))
+            for(j in 1:ncol(inflow)) {I<-cbind(I,getCycleMean(inflow [,j]))};I<-t(I[,-1,drop=FALSE])
             ylim<-c(0,max(apply(I,2,sum),demandTS))*1.1
             title<-x$operation$operation$demands[[i]]$operation$name
             col<-gray(1:ncol(inflow)/ncol(inflow))
-            barplot(I,las=2, ylab=c('Volume (MCM)'),ylim=ylim,main=title,col=col)
-            lines(seq(0.7,13.9,1.2),demandTS,typ='o',pch=21,bg='white',col=2)
+            I<-labelRemover(I)
+            middleOfBars<-barplot(I,las=2, ylab=c('Volume (MCM)'),ylim=ylim,main=title,col=col)
+            lines(middleOfBars,demandTS,typ='o',pch=21,bg='white',col=2)
             legend('top',
                    legend=c(colnames(inflow),'demand'),
                    ncol=2,

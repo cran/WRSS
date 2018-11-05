@@ -10,9 +10,7 @@ base function for class of \code{sim}
 \method{sim}{base}(object)
 }
 \arguments{
-  \item{object}{
-an object inherited from class of \code{createArea}.
-}
+  \item{object}{an object inherited from class of \code{createArea}.}
 }
 \value{
 an object inherited from class of \code{list} and including features as list(s), which are accessable as follows:

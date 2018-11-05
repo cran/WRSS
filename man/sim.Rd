@@ -10,9 +10,7 @@ Constructor for class of \code{sim}
 sim(object)
 }
 \arguments{
-  \item{object}{
-an object inherited from class of \code{createArea}.
-}
+  \item{object}{an object inherited from class of \code{createArea}.}
 }
 \value{
 an object inherited from class of \code{sim}.

@@ -7,7 +7,7 @@ Constructor for class of \code{createAquifer}
 this function constructs an object from class of \code{createAquifer} that prescribes a simplified lupmped model of unconfined aquifer.
 }
 \usage{
-createAquifer(name, area, label, capacity,
+createAquifer(name, area, label, volume,
               rechargeTS, Sy, leakageFraction,
               initialStorage, leakageCode, priority)
 }
@@ -15,33 +15,15 @@ createAquifer(name, area, label, capacity,
   \item{name}{
 (optional) A string: the name of the aquifer
 }
-  \item{area}{
-The area of aquifer (Km^2)
-}
-  \item{label}{
-An individual label assigned to the object as a reference code.
-}
-  \item{capacity}{
-The aquifer volume (MCM)
-}
-  \item{rechargeTS}{
-(optional) A vector : a vector of water flowing into the aquifer (MCM)
-}
-  \item{Sy}{
-Specific yield (default: 0.1)
-}
-  \item{leakageFraction}{
-(optional) The leakage coeffcient of aquifer storage. The leakage is computed as the product of \code{leakageFraction} and aquifer storage.
-}
-  \item{initialStorage}{
-(optional) The initial volume of aquifer in the first step of the simulation (MCM). If missing, the function iterates to carry over the aquifer.
-}
-  \item{leakageCode}{
-The code of an object which leakage volume pours to it.
-}
-  \item{priority}{
-(optional) An integer: the supplying priority. \code{priority} is a value in [1, 99] interval. If missing, the \code{priority} is set to Inf.
-}
+  \item{area}{The area of aquifer (Km^2)}
+  \item{label}{An individual label assigned to the object as a reference code.}
+  \item{volume}{The aquifer volume (MCM)}
+  \item{rechargeTS}{(optional) A vector : a vector of water flowing into the aquifer (MCM)}
+  \item{Sy}{Specific yield (default: 0.1)}
+  \item{leakageFraction}{(optional) The leakage coeffcient of aquifer storage. The leakage is computed as the product of \code{leakageFraction} and aquifer storage. It is in \code{[0, 1]} interval}
+  \item{initialStorage}{(optional) The initial volume of aquifer in the first step of the simulation (MCM). If missing, the function iterates to carry over the aquifer.}
+  \item{leakageCode}{The code of an object which leakage volume pours to it.}
+  \item{priority}{(optional) An integer: the supplying priority. \code{priority} is a value in [1, 99] interval. If missing, the \code{priority} is set to Inf.}
 }
 \value{
 An object from class of \code{createAquifer}

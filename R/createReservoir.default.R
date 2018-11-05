@@ -1,16 +1,42 @@
 createReservoir.default <-
-function(name         ="resrvoir1"              ,
-         label                                  ,
-         priority        =NA                    ,
-         netEvaporation                         ,
-         downstream =NA                         ,
-         initialStorage  =NA                    ,
-         seepageFraction =NA                    ,
-         seepageCode     =NA                    ,
-         geometry   =list(deadStorage    = NULL ,
-                          capacity       = NULL ,
-                          ratingCurve    = NULL))
+function(type='storage',name='unknown',label,
+         priority=NA,downstream=NA,netEvaporation=NA,
+         seepageFraction=NA,seepageCode=NA,
+         geometry=list(storageAreaTable=NULL,
+                       storageElevationTable=NULL,
+                       dischargeElevationTable=NULL,
+                       deadStorage=NULL,capacity=NULL),
+         plant=list(installedCapacity=NULL,
+                    efficiency=NULL,
+                    designHead=NULL,
+                    designFlow=NULL,
+                    turbineAxisElevation=NULL,
+                    submerged=FALSE,loss=0),
+         penstock=list(diameter=NULL,length=NULL,roughness=110),
+         initialStorage=NA)
 {
+   if(type == 'storage')
+   {
+      if(any(c(is.null(geometry$storageAreaTable),is.null(geometry$capacity))))
+      {
+         stop('reservoir geometric specifications are not specified!')
+      }
+   }
+   if(type == 'hydropower')
+   {
+      if(any(c(is.null(geometry$storageElevationTable),
+               is.null(geometry$capacity),
+               ifelse(plant$submerged,is.null(geometry$dischargeElevationTable),FALSE),
+               is.null(plant$installedCapacity),
+               is.null(plant$efficiency),
+               is.null(plant$designHead),
+               is.null(plant$designFlow),
+               is.null(plant$turbineAxisElevation),
+               ifelse(penstock$length>0,is.null(penstock$diameter),FALSE))))
+      {
+          stop('plant parameter(s) or reservoir geometric specifications required for power simulation are missing!')
+      }
+   }
 
    if(missing(label))
    {
@@ -20,17 +46,9 @@ function(name         ="resrvoir1"              ,
    {
       priority<-Inf
    }
-   if(missing(netEvaporation))
-   {
-      stop("net evaporation is missing!")
-   }
-   if(is.null(geometry$ratingCurve))
-   {
-      stop("rating curve is missing!")
-   }
    if(is.null(geometry$deadStorage))
    {
-      stop("Minimum storage is missing!")
+      geometry$deadStorage<-0
    }
    if(is.null(geometry$capacity))
    {
@@ -42,9 +60,9 @@ function(name         ="resrvoir1"              ,
    }
    if(!is.na(initialStorage))
    {
-      if(initialStorage>geometry$capacity | initialStorage<geometry$deadStorage)
+      if(initialStorage>geometry$capacity | initialStorage<0)
       {
-         stop('bas initial storage is set!')
+         stop('bad initial storage is set!')
       }
    }
    if((is.na(seepageFraction)+is.na(seepageCode))==1)
@@ -63,7 +81,7 @@ function(name         ="resrvoir1"              ,
    }
 
    resault<-list()
-   operation<-createReservoir.base (name,label,priority,netEvaporation,downstream,initialStorage,seepageFraction,seepageCode,geometry)
+   operation<-createReservoir.base (type,name,label,priority,downstream,netEvaporation,seepageFraction,seepageCode,geometry,plant,penstock,initialStorage)
    resault$operation<-operation
    resault$call<-match.call()
    class(resault)<-'createReservoir'

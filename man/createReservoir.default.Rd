@@ -7,32 +7,64 @@
  this function constructs an object from class of \code{createReservoir}, which is able to simulate a storage reservoir under given a sort of demand(s).
 }
 \usage{
-  \method{createReservoir}{default}(name         ="resrvoir1",
-         label                                  ,
-         priority        =NA                    ,
-         netEvaporation                         ,
-         downstream =NA                         ,
-         initialStorage  =NA                    ,
-         seepageFraction =NA                    ,
-         seepageCode     =NA                    ,
-         geometry   =list(deadStorage    = NULL ,
-                          capacity       = NULL ,
-                          ratingCurve    = NULL))
+  \method{createReservoir}{default}(type='storage',
+                          name='unknown',
+                          label,
+                          priority=NA,
+                          downstream=NA,
+                          netEvaporation=NA,
+                          seepageFraction=NA,
+                          seepageCode=NA,
+                          geometry=list(storageAreaTable=NULL,
+                                        storageElevationTable=NULL,
+                                        dischargeElevationTable=NULL,
+                                        deadStorage=NULL,
+                                        capacity=NULL),
+                          plant=list(installedCapacity=NULL,
+                                     efficiency=NULL,
+                                     designHead=NULL,
+                                     designFlow=NULL,
+                                     turbineAxisElevation=NULL,
+                                     submerged=FALSE,
+                                     loss=0),
+                          penstock=list(diameter=NULL,
+                                        length=NULL,
+                                        roughness=110),
+                          initialStorage=NA)
 }
 \arguments{
+  \item{type}{A string: the type of the reservoir being instantiated: by default 'storage', however, it can be 'hydropower'}
   \item{name}{(optional) A string: the name of the reservoir.}
   \item{label}{An individual label assigned to the object as a reference code.}
   \item{priority}{(optional) An integer: the supplying priority. \code{priority} is a value in [1, 99] interval. If missing, the \code{priority} is set to Inf.}
-  \item{netEvaporation}{A vector: is a vector of net evaporation depth time series at the location of dam site (meter).}
   \item{downstream}{The code of an object which spilage volume pours to it.}
-  \item{initialStorage}{(optional) The initial stored water at the reservoir in the first step of the simulation (MCM). If is missing the the function iterate to carry over the aquifer.}
-  \item{seepageFraction}{(optional) The seepage coeffcient of reservoir storage. The seepage is computed as the product of \code{seepageFraction} and reservoir storage.}
+  \item{netEvaporation}{A vector: is a vector of net evaporation depth time series at the location of dam site (meter). If omitted, the evaporation is assumed to be zero.}
+  \item{seepageFraction}{(optional) The seepage coeffcient of reservoir storage. The seepage is computed as the product of \code{seepageFraction} and reservoir storage. It is in \code{[0, 1]} interval}
   \item{seepageCode}{The code of an object which seepage volume pours to it.}
   \item{geometry}{A list of reservoir geometric specifications:
-      \code{deadStorage}: refers to water in a reservoir that cannot be drained by gravity through the dam outlet works (MCM);
-    \code{capacity}: The maximum capacity of the reservoir;
-    \code{ratingCurve}: is a matrix whose first column includes reservoir volume (MCM) for different elevation levels and the second column contains reservoir area (Km^2) corresponding to the first column.
+      \itemize{
+          \item \code{storageAreaTable}: is a matrix whose first column includes reservoir volume (MCM) for different elevation levels and the second column contains reservoir area (in Km^2) corresponding to the first column
+          \item \code{storageElevationTable}: is a matrix whose first column includes reservoir volume (MCM) for different elevation levels and the second column contains elevation (in meter) corresponding to the first column
+          \item \code{dischargeElevationTable}: is a matrix whose first column includes the capacity of reservoir tailwater discharge rate (in cms) for different elevation levels and the second column contains elevation levels corresponding to the first column, required if the \code{type = 'hydropower'} and the item \code{submerged = TRUE}
+          \item \code{deadStorage}: refers to water in a reservoir that cannot be drained by gravity through the dam outlet works (MCM)
+          \item \code{capacity}: The maximum capacity of the reservoir}
   }
+  \item{plant}{A list of power plant specifications. It is provided if \code{type = 'hydropower'}:
+      \itemize{
+          \item \code{efficiency}: is a matrix whose first column includes discharge rate (in cms) and the second column turbine effeciency, in \code{[0 1]} interval, corresponding to the first column
+          \item \code{designHead}: A vector of length of two, containing the minimum and maximum design water head (in meter) of the turbine respecively, that the it is in active state
+          \item \code{designFlow}: A vector of length of two, containing the minimum and maximum design flow rate (in cms) of the turbine respecively, that the it is in active state
+          \item \code{turbineAxisElevation}: The elevation of axis of the installed turbine (in meter)
+          \item \code{submerged}: logical: if the turbine is of type of submeged on, \code{TRUE}, otherwise, \code{FALSE}
+          \item \code{loss}: losses associated with the turbine (in meter)}
+  }
+  \item{penstock}{(optional) A list of penstock specifications. It is provided if \code{type = 'hydropower'}
+      \itemize{
+         \item \code{diameter}: The diameter of the penstock (in meter)
+         \item \code{length}: The length of the penstock (in meter)
+         \item \code{roughness}: pipe roughness coefficient used for Hazen-Williams formulation}
+  }
+  \item{initialStorage}{(optional) The initial stored water at the reservoir in the first step of the simulation (MCM). If is missing the the function iterate to carry over the reservoir.}
 }
 
 \value{

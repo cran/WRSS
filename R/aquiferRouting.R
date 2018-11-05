@@ -1,38 +1,75 @@
 aquiferRouting <-
-function(demand                  ,
+function(demand               =NA,
               priority        =NA,
               area               ,
-              capacity           ,
+              volume             ,
               rechargeTS      =NA,
               leakageFraction =NA,
               initialStorage  =NA,
               Sy                 ,
               simulation)
 {
-   duration<-(simulation$end[1]-simulation$start[1])*12+(simulation$end[2]-simulation$start[2])
-   actual_capacity<-capacity*Sy
-   if(nrow(demand)>duration)
+   if(any(c(missing(area),missing(volume),missing(Sy),missing(simulation))))
    {
-      demand<-demand[1:duration,]
+      stop('either of aquifer parameters; area, volume, Sy, or simulation; is missing!')
    }
-   if(nrow(demand)<duration)
+   names(simulation)<-c("start","end","interval")
+   dates<-seq(as.Date(simulation$start),as.Date(simulation$end),simulation$interval)
+   if(all(is.na(rechargeTS)))
    {
-      demand<-rbind(demand,matrix(0,duration-nrow(demand),ncol(demand)))
+      rechargeTS<-rep(0,length(dates))
    }
-   leakage  <-rep(0,duration)
-   storage<-rep(0,duration)
-   energy<-rep(0,duration)
-   release<-matrix(0,duration,ncol(demand))
-   demand<-as.matrix(demand)
-   D<-apply(demand,1,sum)
-   R<-rep(0,duration)
-   storage[1]<-ifelse(is.na(initialStorage),actual_capacity,initialStorage)
+   if(length(dates)>length(rechargeTS))
+   {
+      temp<-rep(0,length(dates))
+      temp[1:length(rechargeTS)]<-rechargeTS
+      rechargeTS<-temp
+      warning('simulation steps miss match with the data length!')
+   }
+   if(length(dates)<length(rechargeTS))
+   {
+      rechargeTS<-rechargeTS[1:length(dates)]
+      warning('simulation steps miss match with the recharge flow length!')
+   }
+   rechargeTS<-as.matrix(rechargeTS)
+
+   if(!all(is.na(demand)))
+   {
+      demand<-as.matrix(demand)
+      if (nrow(demand) > length(dates))
+      {
+          demand <- demand[1:length(dates),]
+          warning('simulation steps miss match with the demand vector length!')
+      }
+      if (nrow(demand) < length(dates)) 
+      {
+          demand <- rbind(demand, matrix(0, length(dates)-nrow(demand), ncol(demand)))
+          warning('simulation steps miss match with the demand vector length!')
+      }
+   }else{
+      demand<-data.frame(zero_demand=rep(0,length(dates)))
+   }
+   if(any(is.na(demand)))
+   {
+      stop('demand with missing values!')
+   }
+
+   if (is.na(leakageFraction)) {leakageFraction <- 0}
+   actual_capacity<-volume*Sy
+   leakage        <-rep(0,length(dates))
+   storage        <-rep(0,length(dates))
+   energy         <-rep(0,length(dates))
+   release        <-matrix(0,length(dates),ncol(demand))
+   demand         <-as.matrix(demand)
+   D              <-apply(demand,1,sum)
+   R              <-rep(0,length(dates))
+   storage[1]     <-ifelse(is.na(initialStorage),actual_capacity,initialStorage)
 
    for(iter in 1:ifelse(is.na(initialStorage),10,1))
    {
      if(iter>1)
      {
-        storage[1]<-storage[duration]
+        storage[1]<-storage[length(dates)]
      }
      if((rechargeTS[1]+storage[1]-D[1])>actual_capacity)
      {
@@ -55,7 +92,7 @@ function(demand                  ,
      }
      energy[1]<-storage[1]/area/Sy
     
-     for(t in 2:duration)
+     for(t in 2:length(dates))
      {
         if((rechargeTS[t]+storage[t-1]-D[t])>actual_capacity)
         {
@@ -81,10 +118,11 @@ function(demand                  ,
 
    if(all(is.na(priority)))
    {
+      Release<-matrix(NA,length(dates),ncol(demand))
       for(i in 1:ncol(demand))
       {
-         release[,i]<-ifelse(R>demand[,i],demand[,i],R)
-         R<-R-release[,i]
+         Release[,i]<-ifelse(R>demand[,i],demand[,i],R)
+         R<-R-Release[,i]
       }
    }else{
       sorted<-sort(priority,index.return = TRUE)
@@ -92,12 +130,11 @@ function(demand                  ,
       unique_priority<-sort(unique(priority))
       if(length(unique_priority)<length(priority))
       {
-         merged_Demand<-matrix(NA,duration,length(unique_priority))
+         merged_Demand<-matrix(NA,length(dates),length(unique_priority))
          for(d in 1:length(unique_priority)){merged_Demand[,d]<-apply(as.matrix(demand[,which(!is.na(match(priority,unique_priority[d])))]),1,sum)}
-         release<-matrix(0,duration,ncol(merged_Demand))
+         release<-matrix(0,length(dates),ncol(merged_Demand))
          for(d in 1:length(unique_priority)){release[,d]<-ifelse(R>merged_Demand[,d],merged_Demand[,d],R);R<-R-release[,d]}
-
-         Release<-matrix(NA,duration,ncol(demand))
+         Release<-matrix(NA,length(dates),ncol(demand))
          for(d in 1:length(unique_priority))
          {
             Release[,which(!is.na(match(priority,unique_priority[d])))]<-
@@ -107,14 +144,20 @@ function(demand                  ,
          }
          if(!is.null(colnames(demand))){colnames(Release)<-colnames(demand)}
       }else{
-         Release<-matrix(NA,duration,ncol(demand))
+         Release<-matrix(NA,length(dates),ncol(demand))
          if(!is.null(colnames(demand))){colnames(Release)<-colnames(demand)}
          demand<-as.matrix(demand[,priority_index])
-         release<-matrix(0,duration,ncol(demand))
+         release<-matrix(0,length(dates),ncol(demand))
          for(d in 1:length(unique_priority)){release[,d]<-ifelse(R>demand[,d],demand[,d],R);R<-R-release[,d]}
          for(d in 1:length(unique_priority)){Release[,which(!is.na(match(priority,unique_priority[d])))]<-release[,d]}
       }
    }
     Release[which(is.nan(Release[,1])),]<-0
-    return(list(release=Release,leakage=leakage,storage=storage))
+    Release<-as.data.frame(Release);rownames(Release)<-dates
+    rechargeTS<-as.data.frame(rechargeTS);rownames(rechargeTS)<-dates
+    leakage<-as.data.frame(leakage);rownames(leakage)<-dates
+    storage<-as.data.frame(storage);rownames(storage)<-dates
+    demand<-as.data.frame(demand);rownames(demand)<-dates
+    sim<-list(release=Release,demand=demand,recharge=rechargeTS,leakage=leakage,storage=storage)
+    return(sim)
 }
