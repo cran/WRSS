@@ -1,20 +1,28 @@
 createDiversion.default <-
 function(name         ="Div1"  ,
-         label                  ,
          capacity               ,
-         divertTo               ,
+         divertObject               ,
          downstream   =NA       ,
          priority     =NA)
 {
-   if(missing(label))
+   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),is.na(downstream))))
    {
-      stop("label code is not specified!")
+      stop("diversion downstream code is wrongly specified!")
    }
+   if(all(!is.na(downstream)))
+   {
+      downstream<-downstream$operation$label
+   }
+   if(!any(class(divertObject)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")))
+   {
+      stop("diversion target object is wrongly specified!")
+   }
+   divertObject<-divertObject$operation$label
    if(missing(capacity))
    {
       stop("capacity is not specified!")
    }
-   if(missing(divertTo))
+   if(missing(divertObject))
    {
       stop("the diversion outlet is not specified!")
    }
@@ -24,9 +32,8 @@ function(name         ="Div1"  ,
    }
    resault<-list()
    operation<-createDiversion.base(name,
-                                   label,
                                    capacity,
-                                   divertTo,
+                                   divertObject,
                                    downstream,
                                    priority)
    resault$operation<-operation

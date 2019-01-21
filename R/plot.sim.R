@@ -1,19 +1,6 @@
 plot.sim <-
 function(x,...)
 {
-   readkeygraph <- function(prompt)
-   {
-      getGraphicsEvent(prompt = prompt, 
-                       onMouseDown = NULL,
-                       onMouseMove = NULL,
-                       onMouseUp = NULL,
-                       onKeybd = onKeybd,
-                       consolePrompt = "[press any key to continue.....]")
-      Sys.sleep(0.01)
-      return(keyPressed)
-   }
-   onKeybd <- function(key) keyPressed <<- key
-
    nRes<-length(x$operation$operation$reservoirs)
    nRiv<-length(x$operation$operation$rivers)
    nAuq<-length(x$operation$operation$aquifers)
@@ -78,6 +65,8 @@ function(x,...)
    {
       for(i in 1:nRes)
       {
+         oask <- devAskNewPage(TRUE)
+         on.exit(devAskNewPage(oask))
          inflow  <-x$operation$operation$reservoirs[[i]]$operation$inflow
          outflow <-x$operation$operation$reservoirs[[i]]$operation$outflow
          capacity<-x$operation$operation$reservoirs[[i]]$operation$geometry$capacity
@@ -103,8 +92,6 @@ function(x,...)
                 col=1:6,
                 lwd=c(rep(0,5),2),
                 border=c(rep(1,5),NA))
-         keyPressed = readkeygraph("[press any key to continue.....]")
-         graphics.off()
       }
    }
 
@@ -112,6 +99,8 @@ function(x,...)
    {
       for(i in 1:nRiv)
       {
+         oask <- devAskNewPage(TRUE)
+         on.exit(devAskNewPage(oask))
          inflow <-x$operation$operation$rivers[[i]]$operation$inflow
          outflow<-x$operation$operation$rivers[[i]]$operation$outflow
          I<-rep(NA,length(getCycleMean(inflow [,1])))
@@ -132,8 +121,6 @@ function(x,...)
                 col=c(rep(1,ncol(inflow)),2:(ncol(outflow)+1)),
                 border=c(rep(1,ncol(inflow)),rep(NA,ncol(outflow))),
                 box.lwd=0,box.col=NA)
-         keyPressed = readkeygraph("[press any key to continue.....]")
-         graphics.off()
       }
    }
 
@@ -141,7 +128,8 @@ function(x,...)
    {
       for(i in 1:nAuq)
       {
-         par(dev.new(width = 16, height = 8),mfrow=c(1,2))
+         oask <- devAskNewPage(TRUE)
+         on.exit(devAskNewPage(oask))
          inflow <-x$operation$operation$aquifers[[i]]$operation$inflow
          outflow<-x$operation$operation$aquifers[[i]]$operation$outflow
          storage<-x$operation$operation$aquifers[[i]]$operation$storage
@@ -169,7 +157,7 @@ function(x,...)
          par(mar = c(5, 4, 4, 4) + 0.3)
          IO<-rbind(inflow,outflow)
          IO<-labelRemover(IO)
-         middleOfBars<-barplot(IO,las=2,col=gray(c(1,3)/4),ylab='Volume of inflow & outflow (MCM)',ylim=ylim)
+         middleOfBars<-barplot(IO,las=2,col=gray(c(1,3)/4),ylab='Volume of inflow & outflow (MCM)',ylim=ylim, main=title)
          par(new = TRUE)
          plot(middleOfBars,storage$storage,axes = FALSE, bty = "n", xlab = "", ylab = "",typ='o',col=2,pch=21,bg='white')
          axis(side=4, at = pretty(range(storage)))
@@ -182,8 +170,6 @@ function(x,...)
                 col=c(1,1,2),
                 border=c(1,1,NA),
                 box.lwd=0,box.col=NA)
-         keyPressed = readkeygraph("[press any key to continue.....]")
-         graphics.off()
       }
    }
 
@@ -191,7 +177,8 @@ function(x,...)
    {
       for(i in 1:nDiv)
       {
-         par(dev.new(width = 16, height = 8),mfrow=c(1,2))
+         oask <- devAskNewPage(TRUE)
+         on.exit(devAskNewPage(oask))
          inflow  <-x$operation$operation$diversions[[i]]$operation$inflow
          outflow <-x$operation$operation$diversions[[i]]$operation$outflow
          diverted<-x$operation$operation$diversions[[i]]$operation$sim_result$diverted$diverted
@@ -213,9 +200,7 @@ function(x,...)
                 box.lwd=0,box.col=NA)
          plot(ecdf(diverted)(seq(min(diverted)-0.01,max(diverted)+0.01,0.01)),
                              seq(min(diverted)-0.01,max(diverted)+0.01,0.01),
-              typ='l',xlab='Probability',ylab='Diverted Volume (MCM)')
-         keyPressed = readkeygraph("[press any key to continue.....]")
-         graphics.off()
+              typ='l',xlab='Probability',ylab='Diverted Volume (MCM)', main=title)
       }
    }
 
@@ -223,6 +208,8 @@ function(x,...)
    {
       for(i in 1:nJun)
       {
+         oask <- devAskNewPage(TRUE)
+         on.exit(devAskNewPage(oask))
          inflow  <-x$operation$operation$junctions[[i]]$operation$inflow
          outflow <-x$operation$operation$junctions[[i]]$operation$outflow[,1]
          I<-rep(NA,length(getCycleMean(inflow [,1])))
@@ -248,8 +235,6 @@ function(x,...)
                 col=1:(j+1),
                 pch=0:j,
                 box.lwd=0,box.col=NA)
-         keyPressed = readkeygraph("[press any key to continue.....]")
-         graphics.off()
       }
    }
 
@@ -257,6 +242,8 @@ function(x,...)
    {
       for(i in 1:nDem)
       {
+         oask <- devAskNewPage(TRUE)
+         on.exit(devAskNewPage(oask))
          outflow <-x$operation$operation$demands[[i]]$operation$outflow
          demandTS<-getCycleMean(x$operation$operation$demands[[i]]$operation$demandTS$demand)
          if(ncol(outflow)>1)
@@ -300,10 +287,7 @@ function(x,...)
                    col=c(rep(0,ncol(inflow)),2),
                    border=c(rep(1,ncol(inflow)),NA),
                    box.lwd=0,box.col=NA)
-            
          }
-         keyPressed = readkeygraph("[press any key to continue.....]")
-         graphics.off()
       }
    }
 }

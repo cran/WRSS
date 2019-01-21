@@ -1,6 +1,5 @@
 createDemandSite.default <-
 function(name              ="Unknown"          ,
-         label                                 ,
          demandTS          =NA                 ,
          demandParams=list(waterUseRate=NULL   ,
                            waterVariation=NULL ,
@@ -10,14 +9,20 @@ function(name              ="Unknown"          ,
          downstream        =NA                 ,
          priority          =NA)
 {
-   
+   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),is.na(downstream))))
+   {
+      stop("demand site downstream object is wrongly specified!")
+   }
+   if(all(!is.na(downstream)))
+   {
+      downstream<-downstream$operation$label
+   }
    if(any(c(is.null(demandParams$waterUseRate  ),
             is.null(demandParams$waterVariation),
             is.null(demandParams$cropArea       ))) && all(is.na(demandTS)))  
    {
       stop("missing demand parameter(s) !")
    }
- 
    if(all(is.na(demandTS)))
    {
       if(sum(demandParams$waterVariation)!=100)
@@ -31,6 +36,13 @@ function(name              ="Unknown"          ,
    {
       stop("Supplier label is not specified !")
    }
+   if(all(is.na(match(unlist(lapply(suppliers,class)),c("createAquifer","createRiver","createReservoir","createDiversion")))))
+   {
+      stop("demand site supplier(s) is/are wrongly specified!")
+   }
+   suppliersCode<-c()
+   for(i in 1:length(suppliers)) suppliersCode<-c(suppliersCode,suppliers[[i]]$operation$label)
+   suppliers<-suppliersCode
    if(is.na(priority))
    {
       priority<-Inf
@@ -38,7 +50,6 @@ function(name              ="Unknown"          ,
    
    resault<-list()
    operation<-createDemandSite.base(name              =name              ,
-                                    label             =label             ,
                                     demandTS          =demandTS          ,
                                     demandParams      =demandParams      ,
                                     returnFlowFraction=returnFlowFraction,

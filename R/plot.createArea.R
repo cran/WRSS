@@ -20,12 +20,12 @@ function(x,...)
    matCode<-matrix(NA,3,nRes+nRiv+nAuq+nJun+nDiv+nDem)
    lab<-c()
    i<-0;j<-0;k<-0;l<-0;m<-0;n<-0
-   if(nRes>0){for(i in 1:nRes){matCode[1,i]          <-x$operation$reservoirs[[i]]$operation$label;matCode[2,i]          <-x$operation$reservoirs[[i]]$operation$downstream;matCode [3,i]          <-1;lab<-c(lab,x$operation$reservoirs[[i]]$operation$name)}}
-   if(nRiv>0){for(j in 1:nRiv){matCode[1,i+j]        <-x$operation$rivers    [[j]]$operation$label;matCode[2,i+j]        <-x$operation$rivers    [[j]]$operation$downstream;matCode [3,i+j]        <-2;lab<-c(lab,x$operation$rivers    [[j]]$operation$name)}}
-   if(nAuq>0){for(k in 1:nAuq){matCode[1,i+j+k]      <-x$operation$aquifers  [[k]]$operation$label;matCode[2,i+j+k]      <-x$operation$aquifers  [[k]]$operation$leakageCode;matCode [3,i+j+k]     <-3;lab<-c(lab,x$operation$aquifers  [[k]]$operation$name)}}
-   if(nDiv>0){for(l in 1:nDiv){matCode[1,i+j+k+l]    <-x$operation$diversions[[l]]$operation$label;matCode[2,i+j+k+l]    <-x$operation$diversions[[l]]$operation$downstream;matCode [3,i+j+k+l]    <-4;lab<-c(lab,x$operation$diversions[[l]]$operation$name)}}
-   if(nJun>0){for(m in 1:nJun){matCode[1,i+j+k+l+m]  <-x$operation$junctions [[m]]$operation$label;matCode[2,i+j+k+l+m]  <-x$operation$junctions [[m]]$operation$downstream;matCode [3,i+j+k+l+m]  <-5;lab<-c(lab,x$operation$junctions [[m]]$operation$name)}}
-   if(nDem>0){for(n in 1:nDem){matCode[1,i+j+k+l+m+n]<-x$operation$demands   [[n]]$operation$label;matCode[2,i+j+k+l+m+n]<-x$operation$demands   [[n]]$operation$downstream;matCode [3,i+j+k+l+m+n]<-0;lab<-c(lab,x$operation$demands   [[n]]$operation$name)}}
+   if(nRes>0){for(i in 1:nRes){matCode[1,i]          <-x$operation$reservoirs[[i]]$operation$label;matCode[2,i]          <-x$operation$reservoirs[[i]]$operation$downstream   ;matCode [3,i]          <-1;lab<-c(lab,x$operation$reservoirs[[i]]$operation$name)}}
+   if(nRiv>0){for(j in 1:nRiv){matCode[1,i+j]        <-x$operation$rivers    [[j]]$operation$label;matCode[2,i+j]        <-x$operation$rivers    [[j]]$operation$downstream   ;matCode [3,i+j]        <-2;lab<-c(lab,x$operation$rivers    [[j]]$operation$name)}}
+   if(nAuq>0){for(k in 1:nAuq){matCode[1,i+j+k]      <-x$operation$aquifers  [[k]]$operation$label;matCode[2,i+j+k]      <-x$operation$aquifers  [[k]]$operation$leakageObject;matCode [3,i+j+k]      <-3;lab<-c(lab,x$operation$aquifers  [[k]]$operation$name)}}
+   if(nDiv>0){for(l in 1:nDiv){matCode[1,i+j+k+l]    <-x$operation$diversions[[l]]$operation$label;matCode[2,i+j+k+l]    <-x$operation$diversions[[l]]$operation$downstream   ;matCode [3,i+j+k+l]    <-4;lab<-c(lab,x$operation$diversions[[l]]$operation$name)}}
+   if(nJun>0){for(m in 1:nJun){matCode[1,i+j+k+l+m]  <-x$operation$junctions [[m]]$operation$label;matCode[2,i+j+k+l+m]  <-x$operation$junctions [[m]]$operation$downstream   ;matCode [3,i+j+k+l+m]  <-5;lab<-c(lab,x$operation$junctions [[m]]$operation$name)}}
+   if(nDem>0){for(n in 1:nDem){matCode[1,i+j+k+l+m+n]<-x$operation$demands   [[n]]$operation$label;matCode[2,i+j+k+l+m+n]<-x$operation$demands   [[n]]$operation$downstream   ;matCode [3,i+j+k+l+m+n]<-0;lab<-c(lab,x$operation$demands   [[n]]$operation$name)}}
 
    colnames(matCode)<-lab
    rownames(matCode)<-c('code','downstream','featureType')
@@ -55,11 +55,11 @@ function(x,...)
    {
       for(i in 1:nRiv)
       {
-         if(!is.na(x$operation$rivers[[i]]$operation$seepageCode))
+         if(!is.na(x$operation$rivers[[i]]$operation$seepageObject))
          {
             name<-x$operation$rivers[[i]]$operation$name
             code<-x$operation$rivers[[i]]$operation$label
-            downStream<-x$operation$rivers[[i]]$operation$seepageCode
+            downStream<-x$operation$rivers[[i]]$operation$seepageObject
             codes<-as.matrix(c(code,downStream))
             colnames(codes)<-name
             matCode<-cbind(matCode,codes)
@@ -71,11 +71,11 @@ function(x,...)
    {
       for(i in 1:nRes)
       {
-         if(!is.na(x$operation$reservoirs[[i]]$operation$seepageCode))
+         if(!is.na(x$operation$reservoirs[[i]]$operation$seepageObject))
          {
             name<-x$operation$reservoirs[[i]]$operation$name
             code<-x$operation$reservoirs[[i]]$operation$label
-            downStream<-x$operation$reservoirs[[i]]$operation$seepageCode
+            downStream<-x$operation$reservoirs[[i]]$operation$seepageObject
             codes<-as.matrix(c(code,downStream))
             colnames(codes)<-name
             matCode<-cbind(matCode,codes)
@@ -87,11 +87,11 @@ function(x,...)
    {
       for(i in 1:nDiv)
       {
-         if(!is.na(x$operation$diversions[[i]]$operation$divertTo))
+         if(!is.na(x$operation$diversions[[i]]$operation$divertObject))
          {
             name<-x$operation$diversions[[i]]$operation$name
             code<-x$operation$diversions[[i]]$operation$label
-            downStream<-x$operation$diversions[[i]]$operation$divertTo
+            downStream<-x$operation$diversions[[i]]$operation$divertObject
             codes<-as.matrix(c(code,downStream))
             colnames(codes)<-name
             matCode<-cbind(matCode,codes)

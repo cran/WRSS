@@ -7,13 +7,12 @@ Constructor for class of \code{createDemandSite}
 this function constructs an object from class of \code{createDemandSite}, which represents a demand site such as domestic, agricultural, and etc, with a specified demand time series.
 }
 \usage{
-createDemandSite(name, label, demandTS, demandParams,
+createDemandSite(name, demandTS, demandParams,
                  returnFlowFraction, suppliers,
                  downstream, priority)
 }
 \arguments{
   \item{name}{(optional) A string: the name of the demand site}
-  \item{label}{An individual label assigned to the object as a reference code.}
   \item{demandTS}{A vector: a vector of demand time series (MCM). If \code{demandParams} is null, providing the \code{demandTS} is compulsory.}
   \item{demandParams}{
 A list: If \code{demandTS} is missing, the \code{demandParams} must be provided to establish \code{demandTS}. The \code{demandParams} includes three parts as follows:
@@ -24,9 +23,9 @@ A list: If \code{demandTS} is missing, the \code{demandParams} must be provided 
    }
 }
   \item{returnFlowFraction}{(optional) \code{returnFlowFraction} is fraction of total supplied water to the demand site. The return flow is computed as the product of \code{returnFlowFraction} and the amount of water the demand sites receives. \code{returnFlowFraction} must be in [0, 1] interval.}
-  \item{suppliers}{the reference code number(s) of existing suppliers (objects inherited from the folowing classes: \code{createAquifer}, \code{createRiver}, \code{createReservoir}, \code{createDiversion}).}
-  \item{downstream}{The code of an object which return flow volume pours to it.}
-  \item{priority}{An integer: the priority to be supplied. A value in [1, 99] interval.}
+  \item{suppliers}{A list of object(s) inherited from the folowing classes: \code{createAquifer}, \code{createRiver}, \code{createReservoir}, \code{createDiversion}.}
+  \item{downstream}{(optional) An object from either of classes of \code{\link[WRSS]{createAquifer}} , \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createJunction}}, \code{\link[WRSS]{createDiversion}}, and \code{\link[WRSS]{createDemandSite}}; which return flow volume pours to it.}
+  \item{priority}{(optional) An integer: the priority to be supplied. A value in [1, 99] interval.}
 }
 \value{
 An object from class of \code{createDemandSite}

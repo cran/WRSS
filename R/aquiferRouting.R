@@ -1,17 +1,17 @@
 aquiferRouting <-
-function(demand               =NA,
-              priority        =NA,
-              area               ,
-              volume             ,
-              rechargeTS      =NA,
-              leakageFraction =NA,
-              initialStorage  =NA,
-              Sy                 ,
+function(demand               =NA ,
+              priority        =NA ,
+              area                ,
+              volume              ,
+              rechargeTS      =NA ,
+              leakageFraction =NA ,
+              initialStorage  =NA ,
+              Sy              =0.1,
               simulation)
 {
-   if(any(c(missing(area),missing(volume),missing(Sy),missing(simulation))))
+   if(any(c(missing(area),missing(volume),missing(simulation))))
    {
-      stop('either of aquifer parameters; area, volume, Sy, or simulation; is missing!')
+      stop('either of aquifer parameters; area, volume, or simulation; is missing!')
    }
    names(simulation)<-c("start","end","interval")
    dates<-seq(as.Date(simulation$start),as.Date(simulation$end),simulation$interval)

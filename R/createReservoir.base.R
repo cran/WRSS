@@ -1,16 +1,16 @@
 createReservoir.base <-
-function(type,name,label,priority,downstream,netEvaporation,
-         seepageFraction,seepageCode,geometry,plant,
+function(type,name,priority,downstream,netEvaporation,
+         seepageFraction,seepageObject,geometry,plant,
          penstock,initialStorage)
 {
    reservoir<-list(type=type,
                    name=name,
-                   label=label,
+                   label=runif(1),
                    priority=priority,
                    downstream=downstream,
                    netEvaporation=netEvaporation,
                    seepageFraction=seepageFraction,
-                   seepageCode=seepageCode,
+                   seepageObject=seepageObject,
                    geometry=geometry,
                    plant=plant,
                    penstock=penstock,

@@ -1,2 +1,2 @@
 createRiver <-
-function(name,label,downstream,seepageFraction,seepageCode,discharge,priority) UseMethod("createRiver")
+function(name,downstream,seepageFraction,seepageObject,discharge,priority) UseMethod("createRiver")

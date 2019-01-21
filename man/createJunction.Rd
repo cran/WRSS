@@ -7,12 +7,11 @@ Constructor for class of \code{createJunction}
 this function constructs an object from class of \code{createDiversion}, acting as a junction in the basin which is able to aggregate outflow water from upper tributaries and/or objects in the upstream.
 }
 \usage{
-createJunction(name, label, downstream)
+createJunction(name, downstream)
 }
 \arguments{
   \item{name}{(optional) A string: the name of the junction}
-  \item{label}{An individual label assigned to the object as a reference code.}
-  \item{downstream}{The code of an object which outflow volume pours to it.}
+  \item{downstream}{(optional) An object from either of classes of \code{\link[WRSS]{createAquifer}} , \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createJunction}}, \code{\link[WRSS]{createDiversion}}, and \code{\link[WRSS]{createDemandSite}}; which overflow volume pours to it.}
 }
 \value{
 An object from class of \code{createJunction}

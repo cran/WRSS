@@ -12,13 +12,13 @@
                  initialStorage = NA, Sy, simulation)
 }
 \arguments{
-  \item{demand}{A matrix: is column-wise matrix of demands, at which the rows present demands for each monthly time step and columns are for different individual demand sites (MCM).}
-  \item{priority}{A vector: is a vector of priorities associated to \code{demand}}
+  \item{demand}{(optional) A matrix: is column-wise matrix of demands, at which the rows present demands for each monthly time step and columns are for different individual demand sites (MCM).}
+  \item{priority}{(optional) A vector: is a vector of priorities associated to \code{demand}}
   \item{area}{The area of aquifer (Km^2)}
   \item{volume}{The aquifer volume (MCM)}
-  \item{rechargeTS}{A vector : a vector of water flowing into the aquifer (MCM)}
-  \item{leakageFraction}{The leakage coeffcient of aquifer storage. The leakage is computed as the product of \code{leakageFraction} and aquifer storage. It is in \code{[0, 1]} interval}
-  \item{initialStorage}{The initial volume of aquifer at the first step of the simulation (MCM). If missing, the function iterates to carry over the aquifer}
+  \item{rechargeTS}{(optional) A vector : a vector of water flowing into the aquifer (MCM)}
+  \item{leakageFraction}{(optional) The leakage coeffcient of aquifer storage. The leakage is computed as the product of \code{leakageFraction} and aquifer storage. It is in \code{[0, 1]} interval}
+  \item{initialStorage}{(optional) The initial volume of aquifer at the first step of the simulation (MCM). If missing, the function iterates to carry over the aquifer}
   \item{Sy}{Specific yield (default: 0.1)}
   \item{simulation}{A list: \code{simulation} is a list of three vectors: \code{start}, \code{end}, and \code{interval}. the \code{start} and \code{end} components must be in \code{'YYYY-MM-DD'} format. the \code{interval} component can takes either of \code{'day','week'}, or \code{'month'}.}
 }

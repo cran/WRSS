@@ -1,16 +1,17 @@
 createJunction.default <-
 function(name         ="junc1"  ,
-         label                  ,
          downstream   =NA)
 {
-   if(missing(label))
+   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),is.na(downstream))))
    {
-      stop("label code is not specified!")
+      stop("junction downstream object is wrongly specified!")
    }
-   
+   if(all(!is.na(downstream)))
+   {
+      downstream<-downstream$operation$label
+   }
    resault<-list()
    operation<-createJunction.base(name,
-                                  label,
                                   downstream)
    resault$operation<-operation
    resault$call<-match.call()

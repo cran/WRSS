@@ -1,7 +1,7 @@
 riverRouting <-
      function(demand         =NA,
               priority       =NA,
-              discharge         ,
+              discharge      =NA,
               seepageFraction=NA,
               simulation)
 {
@@ -16,7 +16,10 @@ riverRouting <-
    {
       stop('the seepageFraction must be in [0 1] interval!')
    }
-
+   if(all(is.na(discharge)))
+   {
+      discharge<-rep(0,length(dates))
+   }
    if(!all(is.na(demand)))
    {
       demand<-as.matrix(demand)

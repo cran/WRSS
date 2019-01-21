@@ -1,7 +1,7 @@
 createReservoir.default <-
-function(type='storage',name='unknown',label,
+function(type='storage',name='unknown',
          priority=NA,downstream=NA,netEvaporation=NA,
-         seepageFraction=NA,seepageCode=NA,
+         seepageFraction=NA,seepageObject=NA,
          geometry=list(storageAreaTable=NULL,
                        storageElevationTable=NULL,
                        dischargeElevationTable=NULL,
@@ -15,6 +15,22 @@ function(type='storage',name='unknown',label,
          penstock=list(diameter=NULL,length=NULL,roughness=110),
          initialStorage=NA)
 {
+   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),is.na(downstream))))
+   {
+      stop("reservoir downstream object is wrongly specified!")
+   }
+   if(all(!is.na(downstream)))
+   {
+      downstream<-downstream$operation$label
+   }
+   if(!any(c(class(seepageObject)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),is.na(seepageObject))))
+   {
+      stop("reservoir seepage object is wrongly specified!")
+   }
+   if(all(!is.na(seepageObject)))
+   {
+      seepageObject<-seepageObject$operation$label
+   }
    if(type == 'storage')
    {
       if(any(c(is.null(geometry$storageAreaTable),is.null(geometry$capacity))))
@@ -38,10 +54,6 @@ function(type='storage',name='unknown',label,
       }
    }
 
-   if(missing(label))
-   {
-      stop("label code is missing!")
-   }
    if(is.na(priority))
    {
       priority<-Inf
@@ -65,7 +77,7 @@ function(type='storage',name='unknown',label,
          stop('bad initial storage is set!')
       }
    }
-   if((is.na(seepageFraction)+is.na(seepageCode))==1)
+   if((is.na(seepageFraction)+is.na(seepageObject))==1)
    {
       stop("Seepage parameters missing!")
    }
@@ -81,7 +93,7 @@ function(type='storage',name='unknown',label,
    }
 
    resault<-list()
-   operation<-createReservoir.base (type,name,label,priority,downstream,netEvaporation,seepageFraction,seepageCode,geometry,plant,penstock,initialStorage)
+   operation<-createReservoir.base (type,name,priority,downstream,netEvaporation,seepageFraction,seepageObject,geometry,plant,penstock,initialStorage)
    resault$operation<-operation
    resault$call<-match.call()
    class(resault)<-'createReservoir'

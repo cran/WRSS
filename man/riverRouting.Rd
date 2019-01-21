@@ -10,9 +10,9 @@
   riverRouting(demand=NA, priority = NA, discharge, seepageFraction=NA, simulation)
 }
 \arguments{
-  \item{demand}{A matrix: is column-wise matrix of demands, at which the rows presents demands for each time step and columns are for different individual demand sites (MCM).}
-  \item{priority}{A vector: is a vector of priorities associated to \code{demand}}
-  \item{discharge}{A vector : a vector of water flowing into the diversion (MCM)}
+  \item{demand}{(optional) A matrix: is column-wise matrix of demands, at which the rows presents demands for each time step and columns are for different individual demand sites (MCM).}
+  \item{priority}{(optional) A vector: is a vector of priorities associated to \code{demand}}
+  \item{discharge}{(optional) A vector : a vector of water flowing into the diversion (MCM)}
   \item{seepageFraction}{(optional) The seepage coeffcient of river discharge flow. The seepage is computed as the product of seepageFraction and river discharge. It is in \code{[0, 1]} interval}
   \item{simulation}{A list: \code{simulation} is a list of three vectors: \code{start}, \code{end}, and \code{interval}. the \code{start} and \code{end} components must be in \code{'YYYY-MM-DD'} format. the \code{interval} component can takes either of \code{'day','week'}, or \code{'month'}.
   }

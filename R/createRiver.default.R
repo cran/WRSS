@@ -1,22 +1,32 @@
 createRiver.default <-
 function(name            ="river1",
-         label                    ,
          downstream      =NA      ,
          seepageFraction =NA      ,
-         seepageCode     =NA      ,
-         discharge,
+         seepageObject   =NA      ,
+         discharge       =NA      ,
          priority        =NA)
 {
-   if(missing(label))
+   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),is.na(downstream))))
    {
-      stop("label code is not specified!")
+      stop("river downstream object is wrongly specified!")
+   }
+   if(all(!is.na(downstream)))
+   {
+      downstream<-downstream$operation$label
+   }
+   if(!any(c(class(seepageObject)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),is.na(seepageObject))))
+   {
+      stop("river downstream object is wrongly specified!")
+   }
+   if(all(!is.na(seepageObject)))
+   {
+      seepageObject<-seepageObject$operation$label
    }
    if(missing(discharge))
    {
       stop("discharge time series is not specified!")
    }
-
-   if((is.na(seepageFraction)+is.na(seepageCode))==1)
+   if((is.na(seepageFraction)+is.na(seepageObject))==1)
    {
       stop("Seepage parameters missing!")
    }
@@ -32,10 +42,9 @@ function(name            ="river1",
    if(is.na(priority)){priority<-Inf}
    resault<-list()
    operation<-createRiver.base(name,
-                               label,
                                downstream,
                                seepageFraction,
-                               seepageCode,
+                               seepageObject,
                                discharge,
                                priority)
    resault$operation<-operation

@@ -36,7 +36,7 @@
   \item{inflow}{A vector : a vector of water flowing into the diversion (MCM)}
   \item{netEvaporation}{A vector: is a vector of net evaporation depth time series at the location of dam site (meter). If omitted, the evaporation is assumed to be zero.}
   \item{demand}{A matrix: is column-wise matrix of demands, at which the rows presents demands for each monthly time steps and columns are for different individual demand sites (MCM).}
-  \item{priority}{A vector: is a vector of priorities associated to \code{demand}}
+  \item{priority}{(optional) A vector: is a vector of priorities associated to \code{demand}}
   \item{seepageFraction}{(optional) The seepage coeffcient of reservoir storage. The seepage is computed as the product of \code{seepageFraction} and reservoir storage.}
   \item{geometry}{A list of reservoir geometric specifications:
       \itemize{

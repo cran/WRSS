@@ -7,12 +7,11 @@ default function for class of \code{createJunction}
 this function constructs an object from class of \code{createDiversion}, acting as a junction in the basin which is able to aggregate outflow water from upper tributaries and/or objects in the upstream.
 }
 \usage{
-\method{createJunction}{default}(name = "junc1", label, downstream = NA)
+\method{createJunction}{default}(name = "junc1", downstream = NA)
 }
 \arguments{
   \item{name}{(optional) A string: the name of the junction}
-  \item{label}{An individual label assigned to the object as a reference code.}
-  \item{downstream}{The code of an object which outflow volume pours to it.}
+  \item{downstream}{(optional) An object from either of classes of \code{\link[WRSS]{createAquifer}} , \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createJunction}}, \code{\link[WRSS]{createDiversion}}, and \code{\link[WRSS]{createDemandSite}};  which outflow volume pours to it.}
 }
 \value{
 An object from class of \code{list}

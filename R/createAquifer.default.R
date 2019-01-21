@@ -1,25 +1,29 @@
 createAquifer.default <-
 function(name           ="Aquifer1" ,
          area                       ,
-         label                      ,
          volume                     ,
          rechargeTS     =NA         ,
          Sy             =0.1        ,
          leakageFraction=NA         ,
          initialStorage =NA         ,
-         leakageCode                ,
+         leakageObject  =NA         ,
          priority       =NA)
 {
-   if(missing(label)){stop("label code is not specified!")}
    if(is.na(priority)){priority<-Inf}
    if(missing(volume)){stop("volume is not specified!")}
-   if(missing(leakageCode)){stop("aquifer downstream code is not specified!")}
+   if(!any(c(class(leakageObject)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),is.na(leakageObject))))
+   {
+      stop("aquifer downstream code is wrongly specified!")
+   }
+   if(all(!is.na(leakageObject)))
+   {
+      leakageObject<-leakageObject$operation$label
+   }
    if(is.na(leakageFraction)){leakageFraction<-0}
    if(!is.na(initialStorage)){if((initialStorage>volume*Sy) | (initialStorage<0)){stop('Bad initial storage!')}}
    if(is.na(Sy)){Sy<-0.1}
-
    resault<-list()
-   operation<-createAquifer.base(name,area,label,volume,rechargeTS,Sy,leakageFraction,initialStorage,leakageCode,priority)
+   operation<-createAquifer.base(name,area,volume,rechargeTS,Sy,leakageFraction,initialStorage,leakageObject,priority)
    resault$operation<-operation
    resault$call<-match.call()
    class(resault)<-'createAquifer'

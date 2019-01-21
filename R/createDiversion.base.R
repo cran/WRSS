@@ -1,10 +1,10 @@
 createDiversion.base <-
-function(name,label,capacity,divertTo, downstream,priority)
+function(name,capacity,divertObject, downstream,priority)
 {
    diversion<-list(name=name,
-                  label=label,
+                  label=runif(1),
                   capacity=capacity,
-                  divertTo=divertTo,
+                  divertObject=divertObject,
                   downstream=downstream,
                   priority=priority)
    return(diversion)

@@ -55,6 +55,10 @@ function(area,object)
    {
       object$operation$outflow<-data.frame(outflow=rep(0,simulationSteps))
       rownames(object$operation$outflow)<-dates
+      if(all(is.na(object$operation$discharge)))
+      {
+         object$operation$discharge<-rep(0,simulationSteps)
+      }
       if(length(object$operation$discharge)==simulationSteps)
       {
           riverDischarge            <-data.frame(discharge=object$operation$discharge)
