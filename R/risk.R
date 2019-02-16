@@ -20,9 +20,14 @@ risk<-function (object, s.const = 0.95)
         f <- sum(diff(failure) == 1)
         F <- sum(failure == 0)
         Criaterian[3] <- ifelse(is.nan(f/F), 1, f/F)
-        D<-De[-which(De == 0)]
-        R<-Re[-which(De == 0)]
-        Criaterian[1] <- sum((D - R)/D)
+        if(length(which(De==0))>0)
+        {
+           D<-De[-which(De == 0)]
+           R<-Re[-which(De == 0)]
+           Criaterian[1] <- sum((D - R)/D)
+        }else{
+           Criaterian[1] <- sum((De - Re)/De)
+        }
         return(Criaterian)
     }
     for (i in 1:nDem) {

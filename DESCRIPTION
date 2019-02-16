@@ -2,8 +2,8 @@ Package: WRSS
 Type: Package
 Title: Water Resources System Simulator
 Depends: R (>= 3.0.0), graphics, stats, Hmisc, nloptr
-Version: 2.1
-Date: 2019-01-21
+Version: 2.2
+Date: 2019-02-16
 Author: Rezgar Arabzadeh; Parisa Aberi; Kaveh Panaghi; Shahab Araghinejad; Majid Montaseri
 Maintainer: Rezgar Arabzadeh <rezgararabzadeh@ut.ac.ir>
 Description: Water resources system simulator is a tool for simulation and analysis of large-scale water resources systems. 'WRSS' proposes functions and methods for construction, simulation and analysis of primary storage and hydropower water resources features (e.g. reservoirs, aquifers, and etc.) based on Standard Operating Policy (SOP). 
@@ -11,5 +11,5 @@ License: GPL-3
 Imports: ggplot2, GGally, network
 Repository: CRAN
 NeedsCompilation: no
-Packaged: 2019-01-21 08:05:59 UTC; ASUS
-Date/Publication: 2019-01-21 08:20:03 UTC
+Packaged: 2019-02-16 06:38:42 UTC; ASUS
+Date/Publication: 2019-02-16 07:20:03 UTC

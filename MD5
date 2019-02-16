@@ -1,7 +1,7 @@
-e30abcd9e9b900ecb3c418fc8bc95d34 *DESCRIPTION
+1ca76281c92988dd73a6ab42de1aaa88 *DESCRIPTION
 8f8670f282063bb5b17870a4c9da2a2f *NAMESPACE
 93adbbe32e26cc43451bf1fa4a86ac7b *R/WRSS-internal.R
-349654c780a0009f6b667effbe4c5fc4 *R/addObjectToArea.R
+22ae581a3ffd8f5cae342cf060e648c2 *R/addObjectToArea.R
 28ee47f6ffdb3fbc73064178a42e908d *R/aquiferRouting.R
 4bbe56ce314bc9edba856e7349df809e *R/createAquifer.R
 1d2fa7661b94b374a4ff7830df4c55bb *R/createAquifer.base.R
@@ -29,12 +29,13 @@ d6a4a4cc89f64850721bde5959ae11d7 *R/diversionRouting.R
 8894bee76365607c4dfcd9e18f5215a6 *R/plot.sim.R
 269b1e724ae966a86640db0e98bc1a0a *R/reservoirRouting.R
 de13163d18f5a4b9ad0fc781b054cba4 *R/rippl.R
-14c2456a92a3bc3f6e609654f5759c88 *R/risk.R
+cad1cad6f58877b9eda6c202dce70b15 *R/risk.R
 e1fda0f92c07daecfade5df46900e6a6 *R/riverRouting.R
 bc8f8bfb7d54535e29485f6f44932d5a *R/sim.R
 4681e1d533937c1956d1556f465d181b *R/sim.base.R
 11561e380cf92296d18442e4ea250582 *R/sim.default.R
-7153c1db00d5d99652846485ff484319 *man/WRSS-package.Rd
+1eb90286cf3c94f7bfb5065cf3e39a93 *data/zarrineh.RData
+2e4450d9cad315384d65fe4562708098 *man/WRSS-package.Rd
 fddc48dcb03ef97b614bb38878098a97 *man/addObjectToArea.Rd
 5cee89b1d057f92a6bfbb97e91917cd3 *man/aquiferRouting.Rd
 1961251f4ade782d25b0e8cc8eb79f3b *man/createAquifer.Rd
@@ -63,7 +64,7 @@ d018045b5ccff7e7a11caa71da4d7746 *man/createRiver.default.Rd
 8b79ec8bc9c942aa663d3b050ccf0707 *man/figures/Fig.png
 4a95437f7534af59f438dd86664e9480 *man/figures/Fig1.pdf
 f7e93b6fce6406d3dc07236aaae34c5b *man/figures/Fig1.png
-ca460a6fdda6bdac14abf1a65c75c4bc *man/figures/Thumbs.db
+d020256bf455f5bf4329e4fdd5ddb6a6 *man/figures/Thumbs.db
 24a134a4e4ef10e4414b4c011b02b9ee *man/plot.createArea.Rd
 8538c32602528635a79087c9b5997e72 *man/plot.sim.Rd
 7841643937e8ffc763c3acaf1c910c57 *man/reservoirRouting.Rd
@@ -73,3 +74,4 @@ e88c1957da5bd783a4d854a1b546fbe8 *man/riverRouting.Rd
 343466cab505755b4b6d5f5e80651630 *man/sim.Rd
 e6a882ac3c65e555abcbd6f4d4bbe28d *man/sim.base.Rd
 d61533fb3f7e1f39acab9964ec476bd3 *man/sim.default.Rd
+8a568a791d40f98077052f8fc7a111a0 *man/zarrineh.Rd

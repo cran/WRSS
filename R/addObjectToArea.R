@@ -104,34 +104,35 @@ function(area,object)
       }else{
          NET<-rep(0,simulationSteps)
       }
-      NET<-data.frame(netEvaporation=NET);rownames(NET)<-dates
-      object$operation$netEvaporation<-NET
-      object$operation$outflow<-data.frame(outflow=rep(0,simulationSteps))
-      object$operation$inflow <-data.frame(inflow =rep(0,simulationSteps))
+      NET                                   <-data.frame(netEvaporation=NET)
+      rownames(NET)                         <-dates
+      object$operation$netEvaporation       <-NET
+      object$operation$outflow              <-data.frame(outflow=rep(0,simulationSteps))
+      object$operation$inflow               <-data.frame(inflow =rep(0,simulationSteps))
       rownames(object$operation$outflow)    <-dates
       rownames(object$operation$inflow)     <-dates
-      i<-length(area$operation$reservoirs)+1
-      area$operation$reservoirs[[i]]<-object
+      i                                     <-length(area$operation$reservoirs)+1
+      area$operation$reservoirs[[i]]        <-object
    }
 
    if(class(object)=="createDiversion")
    {
-      object$operation$outflow<-data.frame(outflow=rep(0,simulationSteps))
-      object$operation$inflow<-data.frame(inflow=rep(0,simulationSteps))
-      rownames(object$operation$outflow)    <-dates
-      rownames(object$operation$inflow)     <-dates
-      i<-length(area$operation$diversions)+1
-      area$operation$diversions[[i]]<-object
+      object$operation$outflow           <-data.frame(outflow=rep(0,simulationSteps))
+      object$operation$inflow            <-data.frame(inflow=rep(0,simulationSteps))
+      rownames(object$operation$outflow) <-dates
+      rownames(object$operation$inflow)  <-dates
+      i                                  <-length(area$operation$diversions)+1
+      area$operation$diversions[[i]]     <-object
    }
 
    if(class(object)=="createJunction")
    {
-      object$operation$outflow<-data.frame(outflow=rep(0,simulationSteps))
-      object$operation$inflow<-data.frame(inflow=rep(0,simulationSteps))
-      rownames(object$operation$outflow)    <-dates
-      rownames(object$operation$inflow)     <-dates
-      i<-length(area$operation$junctions)+1
-      area$operation$junctions[[i]]<-object
+      object$operation$outflow           <-data.frame(outflow=rep(0,simulationSteps))
+      object$operation$inflow            <-data.frame(inflow=rep(0,simulationSteps))
+      rownames(object$operation$outflow) <-dates
+      rownames(object$operation$inflow)  <-dates
+      i                                  <-length(area$operation$junctions)+1
+      area$operation$junctions[[i]]      <-object
    }
 
    if(class(object)=="createDemandSite")
@@ -143,27 +144,29 @@ function(area,object)
                        object$operation$demandParams$cropArea/100,
                        floor(simulationSteps/length(object$operation$demandParams$waterVariation))+1)[1:simulationSteps]
       }else{
-         if(length(object$operation$demandTS)!=simulationSteps)
+         demandTS<-object$operation$demandTS
+         if(length(demandTS)!=simulationSteps)
           {
-             if(length(object$operation$demandTS)>simulationSteps)
+             if(length(demandTS)>simulationSteps)
              {
-                demandTS-object$operation$demandTS[1:simulationSteps]
+                demandTS-demandTS[1:simulationSteps]
              }
-             if(length(object$operation$demandTS)<simulationSteps)
+             if(length(demandTS)<simulationSteps)
              {
-                demandTS<-rep(object$operation$demandT,floor(simulationSteps/length(object$operation$demandTS))+1)[1:simulationSteps]
+                demandTS<-rep(demandTS,floor(simulationSteps/length(demandTS))+1)[1:simulationSteps]
              }
              warning('demand vector is reshaped and replicated! miss matched dimenssion with the number of simulation steps!')
           }
       }
-      demandTS<-data.frame(demand=demandTS); rownames(demandTS)    <-dates
-      object$operation$demandTS<-demandTS
-      object$operation$outflow<-data.frame(outflow=rep(0,simulationSteps))
-      object$operation$inflow<-data.frame(inflow=rep(0,simulationSteps))
-      rownames(object$operation$outflow)    <-dates
-      rownames(object$operation$inflow)     <-dates
-      i<-length(area$operation$demands)+1
-      area$operation$demands[[i]]<-object
+      demandTS<-data.frame(demand=demandTS)
+      rownames(demandTS)                  <-dates
+      object$operation$demandTS           <-demandTS
+      object$operation$outflow            <-data.frame(outflow=rep(0,simulationSteps))
+      object$operation$inflow             <-data.frame(inflow=rep(0,simulationSteps))
+      rownames(object$operation$outflow)  <-dates
+      rownames(object$operation$inflow)   <-dates
+      i                                   <-length(area$operation$demands)+1
+      area$operation$demands[[i]]         <-object
    }
    return(area)
 }
