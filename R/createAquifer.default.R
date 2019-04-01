@@ -11,7 +11,7 @@ function(name           ="Aquifer1" ,
 {
    if(is.na(priority)){priority<-Inf}
    if(missing(volume)){stop("volume is not specified!")}
-   if(!any(c(class(leakageObject)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),is.na(leakageObject))))
+   if(!any(c(class(leakageObject)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),all(is.na(leakageObject)))))
    {
       stop("aquifer downstream code is wrongly specified!")
    }

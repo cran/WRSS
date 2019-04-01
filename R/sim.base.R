@@ -238,7 +238,7 @@ function(object)
           if(seepageFraction>0)
           {
             seepage<-as.matrix(sim_result$seepage)
-            seepageObject           <-c(NA,object$operation$reservoirs[[currentFeatureCodes[5]]]$operation$seepageObject,NA,NA,NA)
+            seepageObject         <-c(NA,object$operation$reservoirs[[currentFeatureCodes[5]]]$operation$seepageObject,NA,NA,NA)
             seepageName           <-lookupDownstreamName(seepageObject)
             colnames(seepage)     <-paste('outflow (to: ',seepageName,')',sep='')
             object$operation$reservoirs[[currentFeatureCodes[5]]]$operation$outflow<-cbind(outflow=object$operation$reservoirs[[currentFeatureCodes[5]]]$operation$outflow,seepage)
@@ -249,12 +249,15 @@ function(object)
           {
             spill                 <-as.matrix(sim_result$spill)
             colnames(spill)       <-paste('outflow (to: ',downstreamName,')',sep='')
-            object$operation$reservoirs[[currentFeatureCodes[5]]]$operation$outflow<-cbind(object$operation$reservoirs[[currentFeatureCodes[5]]]$operation$outflow,
-                                                                                           spill,
-                                                                                           sim_result$loss)
+            object$operation$reservoirs[[currentFeatureCodes[5]]]$operation$outflow<-cbind(object$operation$reservoirs[[currentFeatureCodes[5]]]$operation$outflow,spill,sim_result$loss)
             colnames(spill)       <-paste('inflow from(',currentName,')',sep='')
             object                <-findANDset(object,spill,currentFeatureCodes,matCodeAllObjects)
           }else{
+            spill               <-as.matrix(sim_result$spill)
+            colnames(spill)     <-paste('outflow (to: ',downstreamName,')',sep='')
+            object$operation$reservoirs[[currentFeatureCodes[5]]]$operation$outflow<-cbind(object$operation$reservoirs[[currentFeatureCodes[5]]]$operation$outflow,spill,sim_result$loss)
+            colnames(spill)     <-paste('inflow from(',currentName,')',sep='')
+            object              <-findANDset(object,spill,currentFeatureCodes,matCodeAllObjects)
             release             <-sim_result$release
             colnames(release)   <-paste('outflow (to: ',colnames(release),')',sep='')
             object$operation$reservoirs[[currentFeatureCodes[5]]]$operation$outflow<-cbind(object$operation$reservoirs[[currentFeatureCodes[5]]]$operation$outflow,release)

@@ -1,30 +1,29 @@
 createDiversion.default <-
-function(name         ="Div1"  ,
-         capacity               ,
-         divertObject               ,
-         downstream   =NA       ,
+function(name         ="Div1",
+         capacity            ,
+         divertObject =NA    ,
+         downstream   =NA    ,
          priority     =NA)
 {
-   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),is.na(downstream))))
+   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),all(is.na(downstream)))))
    {
-      stop("diversion downstream code is wrongly specified!")
+      stop("diversion downstream is wrongly specified!")
    }
    if(all(!is.na(downstream)))
    {
       downstream<-downstream$operation$label
    }
-   if(!any(class(divertObject)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")))
+   if(!any(c(class(divertObject)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),all(is.na(divertObject)))))
    {
-      stop("diversion target object is wrongly specified!")
+      stop("diversion target is wrongly specified!")
    }
-   divertObject<-divertObject$operation$label
+   if(!all(is.na(divertObject)))
+   {
+      divertObject<-divertObject$operation$label
+   }
    if(missing(capacity))
    {
       stop("capacity is not specified!")
-   }
-   if(missing(divertObject))
-   {
-      stop("the diversion outlet is not specified!")
    }
    if(is.na(priority))
    {

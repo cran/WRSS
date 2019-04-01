@@ -5,11 +5,11 @@ function(name              ="Unknown"          ,
                            waterVariation=NULL ,
                            cropArea=NULL)      ,
          returnFlowFraction =0.0               ,
-         suppliers                             ,
+         suppliers          =NA                ,
          downstream        =NA                 ,
          priority          =NA)
 {
-   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),is.na(downstream))))
+   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),all(is.na(downstream)))))
    {
       stop("demand site downstream object is wrongly specified!")
    }
@@ -32,16 +32,18 @@ function(name              ="Unknown"          ,
                                       demandParams$waterVariation/sum(demandParams$waterVariation)*(100-sum(demandParams$waterVariation))
       }
    }
-   if(missing(suppliers))
+   if(!all(is.na(suppliers)))
    {
-      stop("Supplier label is not specified !")
-   }
-   if(all(is.na(match(unlist(lapply(suppliers,class)),c("createAquifer","createRiver","createReservoir","createDiversion")))))
-   {
-      stop("demand site supplier(s) is/are wrongly specified!")
+      if(all(is.na(match(unlist(lapply(suppliers,class)),c("createAquifer","createRiver","createReservoir","createDiversion")))))
+      {
+         stop("demand site supplier(s) is/are wrongly specified!")
+      }
    }
    suppliersCode<-c()
-   for(i in 1:length(suppliers)) suppliersCode<-c(suppliersCode,suppliers[[i]]$operation$label)
+   if(!all(is.na(suppliers)))
+   {
+      for(i in 1:length(suppliers)) suppliersCode<-c(suppliersCode,suppliers[[i]]$operation$label)
+   }
    suppliers<-suppliersCode
    if(is.na(priority))
    {

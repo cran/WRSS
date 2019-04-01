@@ -19,7 +19,7 @@ this function constructs an object from class of \code{createAquifer} that presc
   \item{Sy}{Specific yield (default: 0.1)}
   \item{leakageFraction}{(optional) The leakage coeffcient of aquifer storage. The leakage is computed as the product of \code{leakageFraction} and aquifer storage. It is in \code{[0, 1]} interval}
   \item{initialStorage}{(optional) The initial volume of aquifer in the first step of the simulation (MCM). If missing, the function iterates to carry over the aquifer.}
-  \item{leakageObject}{(optional) an object; from either of classes of \code{\link[WRSS]{createAquifer}} , \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createJunction}}, \code{\link[WRSS]{createDiversion}}, and \code{\link[WRSS]{createDemandSite}}; which leakage volume pours to it.}
+  \item{leakageObject}{(optional) an object; from either of classes of \code{\link[WRSS]{createAquifer}} , \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createJunction}}, \code{\link[WRSS]{createDiversion}}, or \code{\link[WRSS]{createDemandSite}}; which leakage volume pours to it.}
   \item{priority}{(optional) An integer: the supplying priority. Is a value in [1, 99] interval. If missing, the \code{priority} is set to Inf.}
 }
 

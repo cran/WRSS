@@ -6,7 +6,7 @@ function(name            ="river1",
          discharge       =NA      ,
          priority        =NA)
 {
-   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),is.na(downstream))))
+   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),all(is.na(downstream)))))
    {
       stop("river downstream object is wrongly specified!")
    }
@@ -14,9 +14,9 @@ function(name            ="river1",
    {
       downstream<-downstream$operation$label
    }
-   if(!any(c(class(seepageObject)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),is.na(seepageObject))))
+   if(!any(c(class(seepageObject)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),all(is.na(seepageObject)))))
    {
-      stop("river downstream object is wrongly specified!")
+      stop("river seepage object is wrongly specified!")
    }
    if(all(!is.na(seepageObject)))
    {
@@ -25,10 +25,6 @@ function(name            ="river1",
    if(missing(discharge))
    {
       stop("discharge time series is not specified!")
-   }
-   if((is.na(seepageFraction)+is.na(seepageObject))==1)
-   {
-      stop("Seepage parameters missing!")
    }
    if(!is.na(seepageFraction))
    {

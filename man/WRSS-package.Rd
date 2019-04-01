@@ -13,8 +13,8 @@
   \tabular{ll}{
     Package: \tab WRSS\cr
     Type: \tab Package\cr
-    Version: \tab 2.2\cr
-    Date: \tab 2019-02-16\cr
+    Version: \tab 2.3\cr
+    Date: \tab 2019-04-01\cr
     License: \tab GPL-3\cr
   }
   the package includes three major types of functions as follows:
@@ -28,7 +28,8 @@
     \item{e) \code{\link[WRSS]{createDiversion}}}{constructor for diversions}
     \item{f) \code{\link[WRSS]{createAquifer}}}{constructor for aquifers}
     \item{g) \code{\link[WRSS]{createDemandSite}}}{constructor for demand sites}
-    \item{h) \code{\link[WRSS]{addObjectToArea}}}{adds objects form mentioned above constructors to a basin inherited from class of \code{createBasin}}
+    \item{h) \code{\link[WRSS]{set.as}}}{WRSS objects connector}
+    \item{i) \code{\link[WRSS]{addObjectToArea}}}{adds objects form mentioned above constructors to a basin inherited from class of \code{createBasin}}
   }                                           
   
   2- functions for analysis and operation of water resources objects using Standard Operating Policy (SOP):

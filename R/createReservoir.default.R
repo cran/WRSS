@@ -15,15 +15,15 @@ function(type='storage',name='unknown',
          penstock=list(diameter=NULL,length=NULL,roughness=110),
          initialStorage=NA)
 {
-   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),is.na(downstream))))
+   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),all(is.na(downstream)))))
    {
-      stop("reservoir downstream object is wrongly specified!")
+      stop("reservoir downstream is wrongly specified!")
    }
    if(all(!is.na(downstream)))
    {
       downstream<-downstream$operation$label
    }
-   if(!any(c(class(seepageObject)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),is.na(seepageObject))))
+   if(!any(c(class(seepageObject)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),all(is.na(seepageObject)))))
    {
       stop("reservoir seepage object is wrongly specified!")
    }
@@ -74,12 +74,8 @@ function(type='storage',name='unknown',
    {
       if(initialStorage>geometry$capacity | initialStorage<0)
       {
-         stop('bad initial storage is set!')
+         stop('bad initial storage!')
       }
-   }
-   if((is.na(seepageFraction)+is.na(seepageObject))==1)
-   {
-      stop("Seepage parameters missing!")
    }
 
    if(!is.na(seepageFraction))

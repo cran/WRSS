@@ -38,19 +38,20 @@ The Figure below presents schematic layouts attributed to the examples at the re
 \examples{
 
 #--------------------1st Example--------------------
+R<-createRiver(name="river1",discharge=rnorm(120,5,1.5))
 Res<-createReservoir(name="res3",type='storage',
-                     priority=1,netEvaporation=rnorm(120,0.5,0.1),downstream =NA ,
+                     priority=1,netEvaporation=rnorm(120,0.5,0.1),
                      geometry=list(deadStorage= 10 ,capacity= 90 ,
                      storageAreaTable= cbind(seq(0,90,10),seq(0,9,1))))
 waterVariation<-round(sin(seq(0,pi,length.out=12))*
                        100/sum(sin(seq(0,pi,length.out=12))))
-D<-createDemandSite(name ="Agri5",
+D<-createDemandSite(name ="Agri1",
                     demandParams=list(waterUseRate=1,
                                       waterVariation=waterVariation,
-                                      cropArea=1000),
-                    returnFlowFraction =0.2,suppliers=list(Res),
-                    priority=1)
-R<-createRiver(name="river1",downstream=Res,discharge=rnorm(120,5,1.5))
+                                      cropArea=1000))
+R<-set.as(Res,R,'downstream')
+D<-set.as(Res,D,'supplier')
+
 area<-createArea(name="unknown",location="unknown",
                  simulation=list(start='2000-01-01',
                                  end  ='2000-04-29',
@@ -70,19 +71,24 @@ Res<-createReservoir(name="res3",type='storage',
                      priority=1,netEvaporation=rnorm(120,0.5,0.1),
                      geometry=list(deadStorage= 10 ,capacity= 90 ,
                      storageAreaTable= cbind(seq(0,90,10),seq(0,9,1))))
-R<-createRiver(name="river1",downstream=Res,discharge=rnorm(120,5,1.5))
+R<-createRiver(name="river1",discharge=rnorm(120,5,1.5))
 waterVariation<-round(sin(seq(0,pi,length.out=12))*
                        100/sum(sin(seq(0,pi,length.out=12))))
 D1<-createDemandSite(name ="Agri1",
                     demandParams=list(waterUseRate=1,
                                       waterVariation=waterVariation,
                                       cropArea=1000),
-                    returnFlowFraction =0.2,suppliers=list(Res),priority=1)
+                    returnFlowFraction =0.2,priority=1)
 D2<-createDemandSite(name ="Agri2",
                     demandParams=list(waterUseRate=1,
                                       waterVariation=waterVariation,
                                       cropArea=1000),
-                    returnFlowFraction =0.2,suppliers=list(Res),priority=1)
+                    returnFlowFraction =0.2,priority=1)
+
+R<-set.as(Res,R,'downstream')
+D1<-set.as(Res,D1,'supplier')
+D2<-set.as(Res,D2,'supplier')
+
 area<-createArea(name="unknown",location="unknown",
                  simulation=list(start='2000-01-01',
                                  end  ='2000-04-29',
@@ -100,39 +106,49 @@ plot(simulated)
 #--------------------3rd Example--------------------
 J1<-createJunction(name="j1")
 Res1<-createReservoir(name="res1",type='storage',
-                     priority=1,netEvaporation=rnorm(120,0.5,0.1),downstream =J1 ,
+                     priority=1,netEvaporation=rnorm(120,0.5,0.1),
                      geometry=list(deadStorage= 10 ,capacity= 90 ,
                      storageAreaTable= cbind(seq(0,90,10),seq(0,9,1))))
 Res2<-createReservoir(name="res2",type='storage',
-                     priority=2,netEvaporation=rnorm(120,0.5,0.1),downstream =J1 ,
+                     priority=2,netEvaporation=rnorm(120,0.5,0.1),
                      geometry=list(deadStorage= 10 ,capacity= 90 ,
                      storageAreaTable= cbind(seq(0,90,10),seq(0,9,1))))
-R1<-createRiver(name="river1",downstream=Res1,discharge=rnorm(120,5,1.5))
-R2<-createRiver(name="river2",downstream=Res2,discharge=rnorm(120,5,1.5))
+R1<-createRiver(name="river1",discharge=rnorm(120,5,1.5))
+R2<-createRiver(name="river2",discharge=rnorm(120,5,1.5))
 waterVariation<-round(sin(seq(0,pi,length.out=12))*
                        100/sum(sin(seq(0,pi,length.out=12))))
 D1<-createDemandSite(name ="Agri1",
                     demandParams=list(waterUseRate=1,
                                       waterVariation=waterVariation,
                                       cropArea=1000),
-                    returnFlowFraction =0.2,suppliers=list(Res1),
-                    downstream=J1,priority=1)
+                    returnFlowFraction =0.2,priority=1)
 D2<-createDemandSite(name ="Agri2",
                     demandParams=list(waterUseRate=1,
                                       waterVariation=waterVariation,
                                       cropArea=1000),
-                    returnFlowFraction =0.2,suppliers=list(Res1,Res2),
-                    downstream=J1,priority=2)
+                    returnFlowFraction =0.2,priority=2)
 D3<-createDemandSite(name ="Agri3",
                     demandParams=list(waterUseRate=1,
                                       waterVariation=waterVariation,
                                       cropArea=1000),
-                    returnFlowFraction =0.2,suppliers=list(Res2),
-                    downstream=J1,priority=1)
+                    returnFlowFraction =0.2,priority=1)
 area<-createArea(name="unknown",location="unknown",
                  simulation=list(start='2000-01-01',
                                  end  ='2000-04-29',
                                  interval='day'))
+
+R1<-set.as(Res1,R1,'downstream')
+R2<-set.as(Res2,R2,'downstream')
+Res1<-set.as(J1,Res1,'downstream')
+Res2<-set.as(J1,Res2,'downstream')
+D1<-set.as(J1,D1,'downstream')
+D2<-set.as(J1,D2,'downstream')
+D3<-set.as(J1,D3,'downstream')
+D1<-set.as(Res1,D1,'supplier')
+D2<-set.as(Res1,D2,'supplier')
+D2<-set.as(Res2,D2,'supplier')
+D3<-set.as(Res2,D3,'supplier')
+
 area<-addObjectToArea(area,R1)
 area<-addObjectToArea(area,R2)
 area<-addObjectToArea(area,Res1)
@@ -260,46 +276,59 @@ waterVariation<-round(sin(seq(0,pi,length.out=12))*
 D0<-createDemandSite(name ="Agri0",
                     demandParams=list(waterUseRate=1,
                                       waterVariation=waterVariation,
-                                      cropArea=1000),
-                    returnFlowFraction =0.2,suppliers=list(Auq1),
-                    priority=1)
-Div1<-createDiversion(name="Div1",capacity=10,
-                       divertObject=Auq1)
-J2<-createJunction(name="junc2",downstream=Auq1)
+                                      cropArea=1000),priority=1)
+Div1<-createDiversion(name="Div1",capacity=10)
+J2<-createJunction(name="junc2")
 
 Res2<-createReservoir(name="res2",type='storage',
-                     priority=1,netEvaporation=rnorm(120,0.5,0.1),downstream =J2 ,
+                     priority=1,netEvaporation=rnorm(120,0.5,0.1),
                      geometry=list(deadStorage= 10 ,capacity= 90 ,
                      storageAreaTable= cbind(seq(0,90,10),seq(0,9,1))))
-R2<-createRiver(name="river2",downstream=Res2,discharge=rnorm(120,12,3))
+R2<-createRiver(name="river2",discharge=rnorm(120,12,3))
 D3<-createDemandSite(name ="Agri3",
                     demandParams=list(waterUseRate=1,
                                       waterVariation=waterVariation,
                                       cropArea=1000),
-                    returnFlowFraction =0.2,suppliers=list(Res2),
-                    downstream=J2,priority=2)
-J1<-createJunction(name="junc1",downstream=Div1)
+                    returnFlowFraction =0.2,priority=2)
+J1<-createJunction(name="junc1")
 Res1<-createReservoir(name="res1",type='storage',
-                     priority=1,netEvaporation=rnorm(120,0.5,0.1),downstream =J1 ,
+                     priority=1,netEvaporation=rnorm(120,0.5,0.1),
                      geometry=list(deadStorage= 10 ,capacity= 90 ,
                      storageAreaTable= cbind(seq(0,90,10),seq(0,9,1))))
-R1<-createRiver(name="river1",downstream=Res1,discharge=rnorm(120,5,1))
+R1<-createRiver(name="river1",discharge=rnorm(120,5,1))
 D2<-createDemandSite(name ="Agri2",
                     demandParams=list(waterUseRate=1,
                                       waterVariation=waterVariation,
                                       cropArea=1000),
-                    returnFlowFraction =0.2,suppliers=list(Res1,Res2),
-                    downstream=J1,priority=2)
+                    returnFlowFraction =0.2,priority=2)
 D1<-createDemandSite(name ="Agri1",
                     demandParams=list(waterUseRate=1,
                                       waterVariation=waterVariation,
                                       cropArea=1000),
-                    returnFlowFraction =0.2,suppliers=list(Res1),
-                    downstream=J1,priority=1)
+                    returnFlowFraction =0.2,priority=1)
 area<-createArea(name="unknown",location="unknown",
                  simulation=list(start='2000-01-01',
                                  end  ='2000-04-29',
                                  interval='day'))
+
+R1<-set.as(Res1,R1,'downstream')
+R2<-set.as(Res2,R2,'downstream')
+Res1<-set.as(J1,Res1,'downstream')
+Res2<-set.as(J2,Res2,'downstream')
+J1<-set.as(Div1,J1,'downstream')
+J2<-set.as(Auq1,J2,'downstream')
+Div1<-set.as(Auq1,Div1,'divertObject')
+D1<-set.as(J1,D1,'downstream')
+D2<-set.as(J1,D2,'downstream')
+D3<-set.as(J2,D3,'downstream')
+D1<-set.as(Res1,D1,'supplier')
+D2<-set.as(Res1,D2,'supplier')
+D2<-set.as(Res2,D2,'supplier')
+D3<-set.as(Res2,D3,'supplier')
+D0<-set.as(Auq1,D0,'supplier')
+
+
+
 area<-addObjectToArea(area,R1)
 area<-addObjectToArea(area,R2)
 area<-addObjectToArea(area,Res1)

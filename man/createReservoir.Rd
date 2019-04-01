@@ -23,10 +23,10 @@ createReservoir(type,
   \item{type}{A string: the type of the reservoir being instantiated: by default 'storage', however, it can be 'hydropower'}
   \item{name}{(optional) A string: the name of the reservoir.}
   \item{priority}{(optional) An integer: the supplying priority. \code{priority} is a value in [1, 99] interval. If missing, the \code{priority} is set to Inf.}
-  \item{downstream}{(optional) An object; from either of classes of \code{\link[WRSS]{createAquifer}} , \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createJunction}}, \code{\link[WRSS]{createDiversion}}, and \code{\link[WRSS]{createDemandSite}}; which spillage volume pours to it.}
+  \item{downstream}{(optional) An object; from either of classes of \code{\link[WRSS]{createAquifer}} , \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createJunction}}, \code{\link[WRSS]{createDiversion}}, or \code{\link[WRSS]{createDemandSite}}; which spillage volume pours to it.}
   \item{netEvaporation}{A vector: is a vector of net evaporation depth time series at the location of dam site (meter). If omitted, the evaporation is assumed to be zero.}
   \item{seepageFraction}{(optional) The seepage coeffcient of reservoir storage. The seepage is computed as the product of \code{seepageFraction} and reservoir storage. It is in \code{[0, 1]} interval}
-  \item{seepageObject}{(optional) An object; from either of classes of \code{\link[WRSS]{createAquifer}} , \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createJunction}}, \code{\link[WRSS]{createDiversion}}, and \code{\link[WRSS]{createDemandSite}};  which seepage volume pours to it.}
+  \item{seepageObject}{(optional) An object; from either of classes of \code{\link[WRSS]{createAquifer}} , \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createJunction}}, \code{\link[WRSS]{createDiversion}}, or \code{\link[WRSS]{createDemandSite}};  which seepage volume pours to it.}
   \item{geometry}{A list of reservoir geometric specifications:
       \itemize{
           \item \code{storageAreaTable}: is a matrix whose first column includes reservoir volume (MCM) for different elevation levels and the second column contains reservoir area (in Km^2) corresponding to the first column
