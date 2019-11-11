@@ -37,6 +37,7 @@ createReservoir(type,
   }
   \item{plant}{A list of power plant specifications. It is provided if \code{type = 'hydropower'}:
       \itemize{
+          \item \code{installedCapacity}: the plant installed capacity (MW)
           \item \code{efficiency}: is a matrix whose first column includes discharge rate (in cms) and the second column turbine effeciency, in \code{[0 1]} interval, corresponding to the first column
           \item \code{designHead}: A vector of length of two, containing the minimum and maximum design water head (in meter) of the turbine respecively, that the it is in active state
           \item \code{designFlow}: A vector of length of two, containing the minimum and maximum design flow rate (in cms) of the turbine respecively, that the it is in active state

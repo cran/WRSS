@@ -7,27 +7,26 @@
 }
 \description{
   The WRSS is an object-oriented R package, which provides tools for simulation and analysis of large-scale supply and hydropower water resources systems. The package includes functions and methods for building, simulation, and visualization of water resources components.
-  
 }
 \details{
   \tabular{ll}{
     Package: \tab WRSS\cr
     Type: \tab Package\cr
-    Version: \tab 2.3\cr
-    Date: \tab 2019-04-01\cr
+    Version: \tab 3.0\cr
+    Date: \tab 2019-11-11\cr
     License: \tab GPL-3\cr
   }
   the package includes three major types of functions as follows:
     
     1- functions for construction and manipulatation of water resources features:
     \describe{
-    \item{a) \code{\link[WRSS]{createArea}}}{constructor for basin/study area}
-    \item{b) \code{\link[WRSS]{createJunction}}}{constructor for junction}
-    \item{c) \code{\link[WRSS]{createRiver}}}{constructor for reach, rivers, and channels}
-    \item{d) \code{\link[WRSS]{createReservoir}}}{constructor for reservoirs}
-    \item{e) \code{\link[WRSS]{createDiversion}}}{constructor for diversions}
-    \item{f) \code{\link[WRSS]{createAquifer}}}{constructor for aquifers}
-    \item{g) \code{\link[WRSS]{createDemandSite}}}{constructor for demand sites}
+    \item{a) \code{\link[WRSS]{createArea}}}{constructor for basin/study area objects}
+    \item{b) \code{\link[WRSS]{createJunction}}}{constructor for junction objects}
+    \item{c) \code{\link[WRSS]{createRiver}}}{constructor for reach, river, and channel objects}
+    \item{d) \code{\link[WRSS]{createReservoir}}}{constructor for reservoir objects}
+    \item{e) \code{\link[WRSS]{createDiversion}}}{constructor for diversion objects}
+    \item{f) \code{\link[WRSS]{createAquifer}}}{constructor for aquifer objects}
+    \item{g) \code{\link[WRSS]{createDemandSite}}}{constructor for demand site objects}
     \item{h) \code{\link[WRSS]{set.as}}}{WRSS objects connector}
     \item{i) \code{\link[WRSS]{addObjectToArea}}}{adds objects form mentioned above constructors to a basin inherited from class of \code{createBasin}}
   }                                           
@@ -40,12 +39,14 @@
     \item{d) \code{\link[WRSS]{diversionRouting}}}{diversion operation}
     \item{e) \code{\link[WRSS]{sim}}}{simulates an objects inherited from class of \code{createArea}}
     \item{f) \code{\link[WRSS]{rippl}}}{computes no-failure storage volume using the sequent peak algorithm(SPA)}
+    \item{g) \code{\link[WRSS]{cap_design}}}{computes RRV measures for a range of design parameters}
   }          
   3- functions for performance analysis and visualization.
   \describe{
     \item{a) \code{\link[WRSS]{plot.sim}}}{plots the results of simulations for an object inherited from class of \code{sim}}
     \item{b) \code{\link[WRSS]{plot.createArea}}}{plots an object from class of \code{createArea}}
     \item{c) \code{\link[WRSS]{risk}}}{computes risk-based criateria for an object inherited from class of \code{sim}}
+    \item{d) \code{\link[WRSS]{GOF}}}{Goodness of fit function}
   }
 }
 \author{

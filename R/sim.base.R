@@ -234,7 +234,7 @@ function(object)
                                              evaporation = sim_result$loss                ,
                                              release     = apply(sim_result$release,1,sum),
                                              seepage     = ifelse(seepageFraction>0,sim_result$seepage,0),
-                                             power       = ifelse(type=='hydropower',sim_result$power,0))
+                                             power       = ifelse(type == 'hydropower',sim_result[[7]],0)[[1]])
           if(seepageFraction>0)
           {
             seepage<-as.matrix(sim_result$seepage)

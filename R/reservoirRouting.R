@@ -12,6 +12,19 @@ reservoirRouting<-function(type='storage',inflow,netEvaporation=NA,demand=NA,pri
    {
       stop('simulation parameters are not specified!')
    }
+
+   geometryBase<-list(storageAreaTable=NULL,
+                      storageElevationTable=NULL,
+                      dischargeElevationTable=NULL,
+                      deadStorage=NULL,
+                      capacity=NULL)
+   if(any(names(geometry)=='storageElevationTable'))   geometryBase$storageElevationTable<-geometry$storageElevationTable
+   if(any(names(geometry)=='storageAreaTable'))        geometryBase$storageAreaTable<-geometry$storageAreaTable
+   if(any(names(geometry)=='dischargeElevationTable')) geometryBase$dischargeElevationTable<-geometry$dischargeElevationTable
+   if(any(names(geometry)=='deadStorage'))             geometryBase$deadStorage<-geometry$deadStorage
+   if(any(names(geometry)=='capacity'))                geometryBase$capacity<-geometry$capacity
+   geometry<-geometryBase
+
    if(type == 'storage')
    {
       if(any(c(is.null(geometry$storageAreaTable),is.null(geometry$capacity))))
@@ -21,6 +34,28 @@ reservoirRouting<-function(type='storage',inflow,netEvaporation=NA,demand=NA,pri
    }
    if(type == 'hydropower')
    {
+      plantBase<-list(installedCapacity=NULL,
+                      efficiency=NULL,
+                      designHead=NULL,
+                      designFlow=NULL,
+                      turbineAxisElevation=NULL,
+                      submerged=FALSE,
+                      loss=0)
+      penstockBase<-list(diameter=NULL,
+                         length=NULL,
+                         roughness=110)
+      if(any(names(plant)   =='installedCapacity'))       plantBase$installedCapacity<-plant$installedCapacity
+      if(any(names(plant)   =='efficiency'))              plantBase$efficiency<-plant$efficiency
+      if(any(names(plant)   =='designHead'))              plantBase$designHead<-plant$designHead
+      if(any(names(plant)   =='designFlow'))              plantBase$designFlow<-plant$designFlow
+      if(any(names(plant)   =='turbineAxisElevation'))    plantBase$turbineAxisElevation<-plant$turbineAxisElevation
+      if(any(names(plant)   =='submerged'))               plantBase$submerged<-plant$submerged
+      if(any(names(plant)   =='loss'))                    plantBase$loss<-plant$loss
+      if(any(names(penstock)=='diameter'))                penstockBase$diameter<-penstock$diameter
+      if(any(names(penstock)=='length'))                  penstockBase$length<-penstock$length
+      if(any(names(penstock)=='roughness'))               penstockBase$roughness<-penstock$roughness
+      plant<-plantBase
+      penstock<-penstockBase
       if(any(c(is.null(geometry$storageElevationTable),
                is.null(geometry$capacity),
                ifelse(plant$submerged,is.null(geometry$dischargeElevationTable),FALSE),
@@ -900,10 +935,9 @@ reservoirRouting<-function(type='storage',inflow,netEvaporation=NA,demand=NA,pri
 
           phi<-ifelse(RCMS[1]==0,0,approxExtrap(x=plant$efficiency[,1],y=plant$efficiency[,2],xout=RCMS[1])$y)
           totalHeadLoss<-plant$loss+ifelse(penstock$length>0,(10.67*penstock$length/penstock$diameter^4.8704)*(RCMS[1]/penstock$roughness)^1.852,0)
-          grossHead<-mean(c(E1,E2))-totalHeadLoss-max(plant$turbineAxisElevation,dischargeElevationFunction(RCMS[1]))
+          grossHead<-mean(c(E1,E2))-totalHeadLoss-max(plant$turbineAxisElevation,ifelse(plant$submerged,dischargeElevationFunction(RCMS[1]),plant$turbineAxisElevation))
           power[1]<-9806*phi*RCMS[1]*grossHead/1e6
           
-
           ####### Second time step and beyond #########
           for (t in 2:length(dates))
           {
@@ -985,10 +1019,8 @@ reservoirRouting<-function(type='storage',inflow,netEvaporation=NA,demand=NA,pri
 
               phi<-ifelse(RCMS[t]==0,0,approxExtrap(x=plant$efficiency[,1],y=plant$efficiency[,2],xout=RCMS[t])$y)
               totalHeadLoss<-plant$loss+ifelse(penstock$length>0,(10.67*penstock$length/penstock$diameter^4.8704)*(RCMS[t]/penstock$roughness)^1.852,0)
-              grossHead<-mean(c(E1,E2))-totalHeadLoss-max(plant$turbineAxisElevation,dischargeElevationFunction(RCMS[t]))
+              grossHead<-mean(c(E1,E2))-totalHeadLoss-max(plant$turbineAxisElevation,ifelse(plant$submerged,dischargeElevationFunction(RCMS[t]),plant$turbineAxisElevation))
               power[t]<-9806*phi*RCMS[t]*grossHead/1e6
-    
-              
           }
       }
       R<-splitter(demand,priority,R) 

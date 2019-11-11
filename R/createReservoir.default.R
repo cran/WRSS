@@ -31,6 +31,19 @@ function(type='storage',name='unknown',
    {
       seepageObject<-seepageObject$operation$label
    }
+
+   geometryBase<-list(storageAreaTable=NULL,
+                      storageElevationTable=NULL,
+                      dischargeElevationTable=NULL,
+                      deadStorage=NULL,
+                      capacity=NULL)
+   if(any(names(geometry)=='storageElevationTable'))   geometryBase$storageElevationTable<-geometry$storageElevationTable
+   if(any(names(geometry)=='storageAreaTable'))        geometryBase$storageAreaTable<-geometry$storageAreaTable
+   if(any(names(geometry)=='dischargeElevationTable')) geometryBase$dischargeElevationTable<-geometry$dischargeElevationTable
+   if(any(names(geometry)=='deadStorage'))             geometryBase$deadStorage<-geometry$deadStorage
+   if(any(names(geometry)=='capacity'))                geometryBase$capacity<-geometry$capacity
+   geometry<-geometryBase
+
    if(type == 'storage')
    {
       if(any(c(is.null(geometry$storageAreaTable),is.null(geometry$capacity))))
@@ -40,6 +53,28 @@ function(type='storage',name='unknown',
    }
    if(type == 'hydropower')
    {
+      plantBase<-list(installedCapacity=NULL,
+                      efficiency=NULL,
+                      designHead=NULL,
+                      designFlow=NULL,
+                      turbineAxisElevation=NULL,
+                      submerged=FALSE,
+                      loss=0)
+      penstockBase<-list(diameter=NULL,
+                         length=NULL,
+                         roughness=110)
+      if(any(names(plant)   =='installedCapacity'))       plantBase$installedCapacity<-plant$installedCapacity
+      if(any(names(plant)   =='efficiency'))              plantBase$efficiency<-plant$efficiency
+      if(any(names(plant)   =='designHead'))              plantBase$designHead<-plant$designHead
+      if(any(names(plant)   =='designFlow'))              plantBase$designFlow<-plant$designFlow
+      if(any(names(plant)   =='turbineAxisElevation'))    plantBase$turbineAxisElevation<-plant$turbineAxisElevation
+      if(any(names(plant)   =='submerged'))               plantBase$submerged<-plant$submerged
+      if(any(names(plant)   =='loss'))                    plantBase$loss<-plant$loss
+      if(any(names(penstock)=='diameter'))                penstockBase$diameter<-penstock$diameter
+      if(any(names(penstock)=='length'))                  penstockBase$length<-penstock$length
+      if(any(names(penstock)=='roughness'))               penstockBase$roughness<-penstock$roughness
+      plant<-plantBase
+      penstock<-penstockBase
       if(any(c(is.null(geometry$storageElevationTable),
                is.null(geometry$capacity),
                ifelse(plant$submerged,is.null(geometry$dischargeElevationTable),FALSE),
@@ -53,30 +88,11 @@ function(type='storage',name='unknown',
           stop('plant parameter(s) or reservoir geometric specifications required for power simulation are missing!')
       }
    }
-
-   if(is.na(priority))
-   {
-      priority<-Inf
-   }
-   if(is.null(geometry$deadStorage))
-   {
-      geometry$deadStorage<-0
-   }
-   if(is.null(geometry$capacity))
-   {
-      stop("Maximum storage is missing!")
-   }
-   if(geometry$deadStorage>geometry$capacity)
-   {
-      stop("Minimum storage cannot be greater than capacity!")
-   }
-   if(!is.na(initialStorage))
-   {
-      if(initialStorage>geometry$capacity | initialStorage<0)
-      {
-         stop('bad initial storage!')
-      }
-   }
+   if(is.na(priority)){priority<-Inf}
+   if(is.null(geometry$deadStorage)){geometry$deadStorage<-0}
+   if(is.null(geometry$capacity)){stop("Maximum storage is missing!")}
+   if(geometry$deadStorage>geometry$capacity){stop("Minimum storage cannot be greater than capacity!")}
+   if(!is.na(initialStorage)){if(initialStorage>geometry$capacity | initialStorage<0){stop('bad initial storage!')}}
 
    if(!is.na(seepageFraction))
    {
