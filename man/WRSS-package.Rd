@@ -13,7 +13,7 @@
     Package: \tab WRSS\cr
     Type: \tab Package\cr
     Version: \tab 3.0\cr
-    Date: \tab 2019-11-11\cr
+    Date: \tab 2022-05-17\cr
     License: \tab GPL-3\cr
   }
   the package includes three major types of functions as follows:
@@ -190,6 +190,7 @@ plot(sim(Area))
 }
 \references{
   Loucks, Daniel P., et al. Water resources systems planning and management: an introduction to methods, models and applications. Paris: Unesco, 2005.
+  Arabzadeh, R.; Aberi, P.; Hesarkazzazi, S.; Hajibabaei, M.; Rauch, W.; Nikmehr, S.; Sitzenfrei, R. WRSS: An Object-Oriented R Package for Large-Scale Water Resources Operation. Water 2021, 13, 3037. https://doi.org/10.3390/w13213037
 }
 \keyword{package}
 \seealso{\code{\link[WRSS]{addObjectToArea}}, \code{\link[WRSS]{plot.sim}}}

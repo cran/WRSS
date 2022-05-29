@@ -2,21 +2,23 @@ set.as<-function(base,target,type='downstream')
 {
    if(missing(base)){stop('base object is missing, with no default value!')}
    if(missing(target)){stop('target object is missing, with no default value!')}
-   if(!any(class(base)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")))
+   if(!inherits(base,c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")))
    {
       stop("base object is wrongly specified!")
    }
-   if(!any(class(target)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")))
+   if(!inherits(target,c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")))
    {
       stop("base object is wrongly specified!")
    }
    if(type=='supplier')
    {
-      if(!any(class(base)==c("createAquifer","createRiver","createReservoir","createDiversion")))
+      
+      if(!inherits(base,c("createAquifer","createRiver","createReservoir","createDiversion")))
       {
          stop("base object must be from a water resources class type!")
       }
-      if(!class(target)=="createDemandSite")
+	  
+      if(!inherits(target,"createDemandSite"))
       {
          stop("base object must be from a demand site class type!")
       }

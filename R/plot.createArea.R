@@ -5,7 +5,8 @@ function(x,...)
    {
       stop("missing x!")
    }
-   if(!(class(x)==c('createArea')))
+   
+   if(!inherits(x,"createArea"))
    {
       stop("bad class type!")
    }

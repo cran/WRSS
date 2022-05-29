@@ -15,7 +15,8 @@ function(type='storage',name='unknown',
          penstock=list(diameter=NULL,length=NULL,roughness=110),
          initialStorage=NA)
 {
-   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),all(is.na(downstream)))))
+   
+   if(!any(c(inherits(downstream,c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")),all(is.na(downstream)))))
    {
       stop("reservoir downstream is wrongly specified!")
    }
@@ -23,7 +24,7 @@ function(type='storage',name='unknown',
    {
       downstream<-downstream$operation$label
    }
-   if(!any(c(class(seepageObject)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),all(is.na(seepageObject)))))
+   if(!any(c(inherits(seepageObject,c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")),all(is.na(seepageObject)))))
    {
       stop("reservoir seepage object is wrongly specified!")
    }

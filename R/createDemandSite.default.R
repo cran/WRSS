@@ -9,7 +9,8 @@ function(name              ="Unknown"          ,
          downstream        =NA                 ,
          priority          =NA)
 {
-   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),all(is.na(downstream)))))
+   
+   if(!any(c(inherits(downstream,c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")),all(is.na(downstream)))))
    {
       stop("demand site downstream object is wrongly specified!")
    }

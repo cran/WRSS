@@ -6,7 +6,7 @@ function(name            ="river1",
          discharge       =NA      ,
          priority        =NA)
 {
-   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),all(is.na(downstream)))))
+   if(!any(c(inherits(downstream,c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")),all(is.na(downstream)))))
    {
       stop("river downstream object is wrongly specified!")
    }
@@ -14,7 +14,7 @@ function(name            ="river1",
    {
       downstream<-downstream$operation$label
    }
-   if(!any(c(class(seepageObject)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),all(is.na(seepageObject)))))
+   if(!any(c(inherits(seepageObject,c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")),all(is.na(seepageObject)))))
    {
       stop("river seepage object is wrongly specified!")
    }

@@ -12,11 +12,11 @@ GOF.default<-function(basin,object,observed)
    {
       stop('observed time series is missing!')
    }
-   if(class(basin)!='sim')
+   if(!inherits(basin,'sim'))
    {
       stop('wrong basin object specified!')
    }
-   if(!any(class(object)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")))
+   if(!inherits(object,c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")))
    {
       stop('wrong simulated object specified!')
    }

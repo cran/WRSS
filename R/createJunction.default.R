@@ -2,7 +2,8 @@ createJunction.default <-
 function(name         ="junc1"  ,
          downstream   =NA)
 {
-   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),all(is.na(downstream)))))
+   
+   if(!any(c(inherits(downstream,c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")),all(is.na(downstream)))))
    {
       stop("junction downstream is wrongly specified!")
    }

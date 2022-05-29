@@ -13,7 +13,7 @@ function(area,object)
    simulationSteps<-length(area$operation$simulatio$dates)
    dates<-area$operation$simulatio$dates
 
-   if(class(object)=="createAquifer")
+   if(inherits(object,"createAquifer"))
    {
       object$operation$outflow<-data.frame(outflow=rep(0,simulationSteps))
       rownames(object$operation$outflow)<-dates
@@ -51,7 +51,7 @@ function(area,object)
       area$operation$aquifers[[i]]<-object
    }
 
-   if(class(object)=="createRiver")
+   if(inherits(object,"createRiver"))
    {
       object$operation$outflow<-data.frame(outflow=rep(0,simulationSteps))
       rownames(object$operation$outflow)<-dates
@@ -81,7 +81,7 @@ function(area,object)
       area$operation$rivers[[i]]<-object
    }
 
-   if(class(object)=="createReservoir")
+   if(inherits(object,"createReservoir"))
    {
       if(!all(is.na(object$operation$netEvaporation)))
       {
@@ -115,7 +115,7 @@ function(area,object)
       area$operation$reservoirs[[i]]        <-object
    }
 
-   if(class(object)=="createDiversion")
+   if(inherits(object,"createDiversion"))
    {
       object$operation$outflow           <-data.frame(outflow=rep(0,simulationSteps))
       object$operation$inflow            <-data.frame(inflow=rep(0,simulationSteps))
@@ -125,7 +125,7 @@ function(area,object)
       area$operation$diversions[[i]]     <-object
    }
 
-   if(class(object)=="createJunction")
+   if(inherits(object,"createJunction"))
    {
       object$operation$outflow           <-data.frame(outflow=rep(0,simulationSteps))
       object$operation$inflow            <-data.frame(inflow=rep(0,simulationSteps))
@@ -135,7 +135,7 @@ function(area,object)
       area$operation$junctions[[i]]      <-object
    }
 
-   if(class(object)=="createDemandSite")
+   if(inherits(object,"createDemandSite"))
    {
       if(all(is.na(object$operation$demandTS)))
       {

@@ -5,7 +5,7 @@ function(name         ="Div1",
          downstream   =NA    ,
          priority     =NA)
 {
-   if(!any(c(class(downstream)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),all(is.na(downstream)))))
+   if(!any(c(inherits(downstream,c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")),all(is.na(downstream)))))
    {
       stop("diversion downstream is wrongly specified!")
    }
@@ -13,7 +13,8 @@ function(name         ="Div1",
    {
       downstream<-downstream$operation$label
    }
-   if(!any(c(class(divertObject)==c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite"),all(is.na(divertObject)))))
+   
+   if(!any(c(inherits(divertObject,c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")),all(is.na(divertObject)))))
    {
       stop("diversion target is wrongly specified!")
    }
