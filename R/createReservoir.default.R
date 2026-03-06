@@ -1,59 +1,70 @@
 createReservoir.default <-
-function(type='storage',name='unknown',
-         priority=NA,downstream=NA,netEvaporation=NA,
-         seepageFraction=NA,seepageObject=NA,
-         geometry=list(storageAreaTable=NULL,
+  function(type='storage',name='unknown',
+           priority=NA,downstream=NA,netEvaporation=NA,
+           seepageFraction=NA,seepageObject=NA,
+           geometry=list(storageAreaTable=NULL,
+                         storageElevationTable=NULL,
+                         dischargeElevationTable=NULL,
+                         deadStorage=NULL,capacity=NULL),
+           plant=list(installedCapacity=NULL,
+                      efficiency=NULL,
+                      designHead=NULL,
+                      designFlow=NULL,
+                      turbineAxisElevation=NULL,
+                      submerged=FALSE,loss=0),
+           penstock=list(diameter=NULL,length=NULL,roughness=110),
+           initialStorage=NA,
+           latlon=NULL)
+  {
+    
+    if(!any(c(inherits(downstream,c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")),all(is.na(downstream)))))
+    {
+      stop("reservoir downstream is wrongly specified!")
+    }
+    if(all(!is.na(downstream)))
+    {
+      downstream<-downstream$operation$label
+    }
+    if(!any(c(inherits(seepageObject,c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")),all(is.na(seepageObject)))))
+    {
+      stop("reservoir seepage object is wrongly specified!")
+    }
+    if(all(!is.na(seepageObject)))
+    {
+      seepageObject<-seepageObject$operation$label
+    }
+    if (!is.null(latlon)) {
+      
+      if (length(latlon) != 2) {
+        stop("`latlon` must be a vector of length 2.")
+      }
+      
+      if (!(latlon[1] > -90  && latlon[1] < 90 &&
+            latlon[2] > -180 && latlon[2] < 180)) {
+        stop("Latitude must be in (-90, 90) and longitude in (-180, 180).")
+      }
+    }
+    geometryBase<-list(storageAreaTable=NULL,
                        storageElevationTable=NULL,
                        dischargeElevationTable=NULL,
-                       deadStorage=NULL,capacity=NULL),
-         plant=list(installedCapacity=NULL,
-                    efficiency=NULL,
-                    designHead=NULL,
-                    designFlow=NULL,
-                    turbineAxisElevation=NULL,
-                    submerged=FALSE,loss=0),
-         penstock=list(diameter=NULL,length=NULL,roughness=110),
-         initialStorage=NA)
-{
-   
-   if(!any(c(inherits(downstream,c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")),all(is.na(downstream)))))
-   {
-      stop("reservoir downstream is wrongly specified!")
-   }
-   if(all(!is.na(downstream)))
-   {
-      downstream<-downstream$operation$label
-   }
-   if(!any(c(inherits(seepageObject,c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")),all(is.na(seepageObject)))))
-   {
-      stop("reservoir seepage object is wrongly specified!")
-   }
-   if(all(!is.na(seepageObject)))
-   {
-      seepageObject<-seepageObject$operation$label
-   }
-
-   geometryBase<-list(storageAreaTable=NULL,
-                      storageElevationTable=NULL,
-                      dischargeElevationTable=NULL,
-                      deadStorage=NULL,
-                      capacity=NULL)
-   if(any(names(geometry)=='storageElevationTable'))   geometryBase$storageElevationTable<-geometry$storageElevationTable
-   if(any(names(geometry)=='storageAreaTable'))        geometryBase$storageAreaTable<-geometry$storageAreaTable
-   if(any(names(geometry)=='dischargeElevationTable')) geometryBase$dischargeElevationTable<-geometry$dischargeElevationTable
-   if(any(names(geometry)=='deadStorage'))             geometryBase$deadStorage<-geometry$deadStorage
-   if(any(names(geometry)=='capacity'))                geometryBase$capacity<-geometry$capacity
-   geometry<-geometryBase
-
-   if(type == 'storage')
-   {
+                       deadStorage=NULL,
+                       capacity=NULL)
+    if(any(names(geometry)=='storageElevationTable'))   geometryBase$storageElevationTable<-geometry$storageElevationTable
+    if(any(names(geometry)=='storageAreaTable'))        geometryBase$storageAreaTable<-geometry$storageAreaTable
+    if(any(names(geometry)=='dischargeElevationTable')) geometryBase$dischargeElevationTable<-geometry$dischargeElevationTable
+    if(any(names(geometry)=='deadStorage'))             geometryBase$deadStorage<-geometry$deadStorage
+    if(any(names(geometry)=='capacity'))                geometryBase$capacity<-geometry$capacity
+    geometry<-geometryBase
+    
+    if(type == 'storage')
+    {
       if(any(c(is.null(geometry$storageAreaTable),is.null(geometry$capacity))))
       {
-         stop('reservoir geometric specifications are not specified!')
+        stop('reservoir geometric specifications are not specified!')
       }
-   }
-   if(type == 'hydropower')
-   {
+    }
+    if(type == 'hydropower')
+    {
       plantBase<-list(installedCapacity=NULL,
                       efficiency=NULL,
                       designHead=NULL,
@@ -86,29 +97,29 @@ function(type='storage',name='unknown',
                is.null(plant$turbineAxisElevation),
                ifelse(penstock$length>0,is.null(penstock$diameter),FALSE))))
       {
-          stop('plant parameter(s) or reservoir geometric specifications required for power simulation are missing!')
+        stop('plant parameter(s) or reservoir geometric specifications required for power simulation are missing!')
       }
-   }
-   if(is.na(priority)){priority<-Inf}
-   if(is.null(geometry$deadStorage)){geometry$deadStorage<-0}
-   if(is.null(geometry$capacity)){stop("Maximum storage is missing!")}
-   if(geometry$deadStorage>geometry$capacity){stop("Minimum storage cannot be greater than capacity!")}
-   if(!is.na(initialStorage)){if(initialStorage>geometry$capacity | initialStorage<0){stop('bad initial storage!')}}
-
-   if(!is.na(seepageFraction))
-   {
+    }
+    if(is.na(priority)){priority<-Inf}
+    if(is.null(geometry$deadStorage)){geometry$deadStorage<-0}
+    if(is.null(geometry$capacity)){stop("Maximum storage is missing!")}
+    if(geometry$deadStorage>geometry$capacity){stop("Minimum storage cannot be greater than capacity!")}
+    if(!is.na(initialStorage)){if(initialStorage>geometry$capacity | initialStorage<0){stop('bad initial storage!')}}
+    
+    if(!is.na(seepageFraction))
+    {
       if(seepageFraction>1 | seepageFraction<0)
       {
-         stop('seepageFraction must be in [0, 1] interval!')
+        stop('seepageFraction must be in [0, 1] interval!')
       }
-   }else{
+    }else{
       seepageFraction<-0
-   }
-
-   resault<-list()
-   operation<-createReservoir.base (type,name,priority,downstream,netEvaporation,seepageFraction,seepageObject,geometry,plant,penstock,initialStorage)
-   resault$operation<-operation
-   resault$call<-match.call()
-   class(resault)<-'createReservoir'
-   return(resault)
-}
+    }
+    
+    resault<-list()
+    operation<-createReservoir.base (type,name,priority,downstream,netEvaporation,seepageFraction,seepageObject,geometry,plant,penstock,initialStorage,latlon)
+    resault$operation<-operation
+    resault$call<-match.call()
+    class(resault)<-'createReservoir'
+    return(resault)
+  }

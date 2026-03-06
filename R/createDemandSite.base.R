@@ -1,5 +1,5 @@
 createDemandSite.base <-
-function(name,demandTS,demandParams,returnFlowFraction,suppliers,downstream,priority)
+function(name,demandTS,demandParams,returnFlowFraction,suppliers,downstream,priority,latlon)
 {
    demand<-list(name=name,
                 label=runif(1),
@@ -8,6 +8,7 @@ function(name,demandTS,demandParams,returnFlowFraction,suppliers,downstream,prio
                 returnFlowFraction=returnFlowFraction,
                 suppliers=suppliers,
                 downstream=downstream,
-                priority=priority)
+                priority=priority,
+                latlon=latlon)
    return(demand)
 }

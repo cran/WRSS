@@ -28,7 +28,7 @@ Rezgar Arabzadeh
 The examples included in this documentation show construction and simulation of primary features of a water resources system using \code{WRSS} package.
 The Figure below presents schematic layouts attributed to the examples at the rest of the page:
 
-\if{html}{\figure{Fig.png}{options: width="60\%" alt="Figure: Fig.png"}}
+\if{html}{\figure{Fig.png}{options: width=600 alt="Figure: Fig.png"}}
 \if{latex}{\figure{Fig.pdf}{options: width=14cm}}
 
 }

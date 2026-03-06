@@ -15,7 +15,8 @@ this function constructs an object from class of \code{createDemandSite}, which 
          returnFlowFraction =0.0                   ,
          suppliers          = NA                   ,
          downstream         =NA                    ,
-         priority           =NA)  
+         priority           =NA                    ,
+		 latlon             =NULL)  
 }
 \arguments{
   \item{name}{(optional) A string: the name of the demand site}
@@ -29,9 +30,10 @@ A list: If \code{demandTS} is missing, the \code{demandParams} must be provided 
    }
 }
   \item{returnFlowFraction}{(optional) \code{returnFlowFraction} is fraction of total supplied water to the demand site. The return flow is computed as the product of \code{returnFlowFraction} and the amount of water the demand sites receives. \code{returnFlowFraction} must be in [0, 1] interval.}
-  \item{suppliers}{(optional) A list of object(s) inherited from the folowing classes: \code{\link[WRSS]{createAquifer}}, \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, code{\link[WRSS]{createDiversion}}.}
+  \item{suppliers}{(optional) A list of object(s) inherited from the folowing classes: \code{\link[WRSS]{createAquifer}}, \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createDiversion}}.}
   \item{downstream}{(optional) An object from either of classes of \code{\link[WRSS]{createAquifer}} , \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createJunction}}, \code{\link[WRSS]{createDiversion}}, or \code{\link[WRSS]{createDemandSite}}; which return flow volume pours to it.}
   \item{priority}{(optional) An integer: the priority to be supplied. A value in [1, 99] interval.}
+  \item{latlon}{(optional) A vector of two elements: \code{lat, lon} in decimal degree representing the location of the object.}
 }
 \value{
 An object from class of \code{createDemandSite}

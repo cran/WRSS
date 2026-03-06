@@ -15,7 +15,8 @@ this function constructs an object from class of \code{createAquifer} that presc
                  leakageFraction = NA ,
                  initialStorage  = NA ,
                  leakageObject   = NA ,
-                 priority        = NA)
+                 priority        = NA,
+				 latlon          = NULL)
 }
 \arguments{
   \item{name}{
@@ -29,6 +30,7 @@ this function constructs an object from class of \code{createAquifer} that presc
   \item{initialStorage}{(optional) The initial volume of aquifer in the first step of the simulation (MCM). If missing, the function iterates to carry over the aquifer.}
   \item{leakageObject}{(optional) an object; from either of classes of \code{\link[WRSS]{createAquifer}} , \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createJunction}}, \code{\link[WRSS]{createDiversion}}, or \code{\link[WRSS]{createDemandSite}}; which leakage volume pours to it.}
   \item{priority}{(optional) An integer: the supplying priority. \code{priority} is a value in [1, 99] interval. If missing, the \code{priority} is set to Inf.}
+  \item{latlon}{(optional) A vector of two elements: \code{lat, lon} in decimal degree representing the location of the object.}
 }
 
 \value{

@@ -1,5 +1,5 @@
 createAquifer.base <-
-function(name,area,volume,rechargeTS,Sy,leakageFraction,initialStorage,leakageObject,priority)
+function(name,area,volume,rechargeTS,Sy,leakageFraction,initialStorage,leakageObject,priority, latlon)
 {
    aquifer<-list(name           =name           ,
                  area           =area           ,
@@ -10,6 +10,7 @@ function(name,area,volume,rechargeTS,Sy,leakageFraction,initialStorage,leakageOb
                  leakageFraction=leakageFraction,
                  initialStorage =initialStorage ,
                  leakageObject  =leakageObject  ,
-                 priority       =priority)
+                 priority       =priority,
+                 latlon         =latlon)
    return(aquifer)
 }

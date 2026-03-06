@@ -1,2 +1,2 @@
 createJunction <-
-function(name,downstream) UseMethod("createJunction")
+function(name,downstream,latlon) UseMethod("createJunction")

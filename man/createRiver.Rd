@@ -8,7 +8,7 @@ this function constructs an object from class of \code{createRiver}, which is ab
 }
 \usage{
 createRiver(name, downstream, seepageFraction,
-            seepageObject, discharge, priority)
+            seepageObject, discharge, priority, latlon)
 }
 \arguments{
   \item{name}{(optional) A string: the name of the river}
@@ -17,6 +17,7 @@ createRiver(name, downstream, seepageFraction,
   \item{seepageObject}{(optional) An object; from either of classes of \code{\link[WRSS]{createAquifer}} , \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createJunction}}, \code{\link[WRSS]{createDiversion}}, or \code{\link[WRSS]{createDemandSite}}; which seepage volume pours to it.}
   \item{discharge}{(optional) A vector: is a vector of river discharge time series (MCM).}
   \item{priority}{(optional) An integer: the supplying priority. \code{priority} is a value in [1, 99] interval. If missing, the \code{priority} is set to \code{Inf}.}
+  \item{latlon}{(optional) A vector of two elements: \code{lat, lon} in decimal degree representing the location of the object.}
 }
 \value{
 An object from class of \code{createRiver}

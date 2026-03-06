@@ -1,5 +1,5 @@
 createRiver.base <-
-function(name ,downstream,seepageFraction,seepageObject,discharge,priority)
+function(name ,downstream,seepageFraction,seepageObject,discharge,priority,latlon)
 {
    river<-list(name=name,
                label=runif(1),
@@ -7,6 +7,7 @@ function(name ,downstream,seepageFraction,seepageObject,discharge,priority)
                seepageFraction=seepageFraction,
                seepageObject=seepageObject,
                discharge=discharge,
-               priority=priority)
+               priority=priority,
+               latlon=latlon)
    return(river)
 }

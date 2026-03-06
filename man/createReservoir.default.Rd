@@ -29,7 +29,8 @@
                           penstock=list(diameter=NULL,
                                         length=NULL,
                                         roughness=110),
-                          initialStorage=NA)
+                          initialStorage=NA,
+						  latlon=NULL)
 }
 \arguments{
   \item{type}{A string: the type of the reservoir being instantiated: by default 'storage', however, it can be 'hydropower'}
@@ -64,6 +65,7 @@
          \item \code{roughness}: pipe roughness coefficient used for Hazen-Williams formulation}
   }
   \item{initialStorage}{(optional) The initial stored water at the reservoir in the first step of the simulation (MCM). If is missing the the function iterate to carry over the reservoir.}
+  \item{latlon}{(optional) A vector of two elements: \code{lat, lon} in decimal degree representing the location of the object.}
 }
 
 \value{

@@ -7,7 +7,8 @@ function(name              ="Unknown"          ,
          returnFlowFraction =0.0               ,
          suppliers          =NA                ,
          downstream        =NA                 ,
-         priority          =NA)
+         priority          =NA                 ,
+         latlon            =NULL)
 {
    
    if(!any(c(inherits(downstream,c("createAquifer","createRiver","createReservoir","createDiversion","createJunction","createDemandSite")),all(is.na(downstream)))))
@@ -50,7 +51,17 @@ function(name              ="Unknown"          ,
    {
       priority<-Inf
    }
-   
+   if (!is.null(latlon)) {
+     
+     if (length(latlon) != 2) {
+       stop("`latlon` must be a vector of length 2.")
+     }
+     
+     if (!(latlon[1] > -90  && latlon[1] < 90 &&
+           latlon[2] > -180 && latlon[2] < 180)) {
+       stop("Latitude must be in (-90, 90) and longitude in (-180, 180).")
+     }
+   }   
    resault<-list()
    operation<-createDemandSite.base(name              =name              ,
                                     demandTS          =demandTS          ,
@@ -58,7 +69,8 @@ function(name              ="Unknown"          ,
                                     returnFlowFraction=returnFlowFraction,
                                     suppliers         =suppliers         ,
                                     downstream        =downstream        ,
-                                    priority          =priority)
+                                    priority          =priority,
+                                    latlon            =latlon)
    resault$operation<-operation
    resault$call<-match.call()
    class(resault)<-'createDemandSite'

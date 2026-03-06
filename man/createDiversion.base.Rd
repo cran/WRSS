@@ -8,7 +8,7 @@ this function constructs an object from class of \code{createDiversion}, acting 
 }
 \usage{
 \method{createDiversion}{base}(name, capacity,
-               divertObject, downstream, priority)
+               divertObject, downstream, priority, latlon)
 }
 \arguments{
   \item{name}{(optional) A string: the name of the diversion}
@@ -16,6 +16,7 @@ this function constructs an object from class of \code{createDiversion}, acting 
   \item{divertObject}{(optional) An object from either of classes of \code{\link[WRSS]{createAquifer}} , \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createJunction}}, \code{\link[WRSS]{createDiversion}}, or \code{\link[WRSS]{createDemandSite}}; which recieves the diverted water volume.}
   \item{downstream}{(optional) An object from either of classes of \code{\link[WRSS]{createAquifer}} , \code{\link[WRSS]{createRiver}}, \code{\link[WRSS]{createReservoir}}, \code{\link[WRSS]{createJunction}}, \code{\link[WRSS]{createDiversion}}, or \code{\link[WRSS]{createDemandSite}}; which overflow volume pours to it.}
   \item{priority}{(optional) An integer: the supplying priority. \code{priority} is a value in [1, 99] interval. If missing, the \code{priority} is set to \code{Inf}.}
+  \item{latlon}{(optional) A vector of two elements: \code{lat, lon} in decimal degree representing the location of the object.}
 }
 \value{
 An object from class of \code{list}

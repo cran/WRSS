@@ -16,7 +16,7 @@ sim(object)
 an object inherited from class of \code{sim}.
 Address keys to access components built-in an object inherited from class of \code{sim} is as figure below:
 
-\if{html}{\figure{Fig1.png}{options: width="60\%" alt="Figure: Fig1.png"}}
+\if{html}{\figure{Fig1.png}{options: width=600 alt="Figure: Fig1.png"}}
 \if{latex}{\figure{Fig1.pdf}{options: width=14cm}}
 }
 \references{

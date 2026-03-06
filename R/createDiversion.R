@@ -1,2 +1,2 @@
 createDiversion <-
-function(name,capacity,divertObject, downstream,priority) UseMethod("createDiversion")
+function(name,capacity,divertObject, downstream,priority,latlon) UseMethod("createDiversion")

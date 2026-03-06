@@ -1,10 +1,12 @@
 createJunction.base <-
 function(name,
-         downstream)
+         downstream,
+         latlon)
 {
    junction<-list(name=name,
                   label=runif(1),
-                  downstream=downstream)
+                  downstream=downstream,
+                  latlon=latlon)
 
    return(junction)
 }

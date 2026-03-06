@@ -12,8 +12,8 @@
   \tabular{ll}{
     Package: \tab WRSS\cr
     Type: \tab Package\cr
-    Version: \tab 3.0\cr
-    Date: \tab 2022-05-17\cr
+    Version: \tab 3.2\cr
+    Date: \tab 2026-03-05\cr
     License: \tab GPL-3\cr
   }
   the package includes three major types of functions as follows:
@@ -77,11 +77,16 @@ bukan<-createReservoir(name='bukan',netEvaporation=E,
                        initialStorage=max, 
                        geometry=list(deadStorage=min,
                                      capacity=max,
-                                     storageAreaTable=RC))
-Zerrineh<-createRiver(name='Zerrineh-River',downstream=bukan,discharge=Q)
-R<-createDemandSite(name='E1',demandTS=R,suppliers=list(bukan),priority=1)
-D<-createDemandSite(name='U1',demandTS=D,suppliers=list(bukan),priority=2)
-A<-createDemandSite(name='A1',demandTS=A,suppliers=list(bukan),priority=3)
+                                     storageAreaTable=RC),
+                       latlon=c(36.422518, 46.528040))
+Zerrineh<-createRiver(name='Zerrineh-River',downstream=bukan,
+                      discharge=Q,latlon=c(36.195921, 46.421897))
+R<-createDemandSite(name='E1',demandTS=R,suppliers=list(bukan),
+                    priority=1,latlon=c(36.454432, 46.510824))
+D<-createDemandSite(name='U1',demandTS=D,suppliers=list(bukan),
+                    priority=2,latlon=c(38.070567, 46.274579))
+A<-createDemandSite(name='A1',demandTS=A,suppliers=list(bukan),
+                    priority=3,latlon=c(37.035751, 45.999025))
 Area<-addObjectToArea(Area,Zerrineh)
 Area<-addObjectToArea(Area,bukan)
 Area<-addObjectToArea(Area,R)
@@ -89,7 +94,7 @@ Area<-addObjectToArea(Area,D)
 Area<-addObjectToArea(Area,A)
 
    ###---------- a junction located in Bukan dam upstream
-J<-createJunction(name='J1', downstream=Zerrineh)
+J<-createJunction(name='J1', downstream=Zerrineh, latlon=c(36.267078, 46.438414))
 Area<-addObjectToArea(Area,J)
 
    ###---------- Markhuz dam
@@ -103,10 +108,12 @@ Markhuz<-createReservoir(name='Markhuz',netEvaporation=E,
                          downstream=J,initialStorage=max,
                          geometry=list(deadStorage=min,
                          capacity=max,
-                         storageAreaTable=RC))
-River<-createRiver(name='Markhuz-River',downstream=Markhuz,discharge=Q)
+                         storageAreaTable=RC), latlon=c(36.297520, 46.165240))
+River<-createRiver(name='Markhuz-River',downstream=Markhuz,
+                   discharge=Q,latlon=c(36.287369, 46.131472))
 A<-createDemandSite(name='A3',demandTS=A,returnFlowFraction=0.3,
-                    suppliers=list(Markhuz),downstream=J,priority=1)
+                    suppliers=list(Markhuz),downstream=J,
+                    priority=1,latlon=c(36.311133, 46.238820))
 Area<-addObjectToArea(Area, River)
 Area<-addObjectToArea(Area, Markhuz)
 Area<-addObjectToArea(Area, A)
@@ -124,14 +131,19 @@ cheraghVeys<-createReservoir(name='cheraghVeys',netEvaporation=E,
                              downstream=J,initialStorage=max,
                              geometry=list(deadStorage=min,
                                            capacity=max,
-                                           storageAreaTable=RC))
-River<-createRiver(name='Cheragh Veys-River',downstream=cheraghVeys,discharge=Q)
+                                           storageAreaTable=RC),
+                             latlon=c(36.178180, 46.099005))
+River<-createRiver(name='Cheragh Veys-River',downstream=cheraghVeys,
+                   discharge=Q,latlon=c(36.130474, 46.039753))
 R<-createDemandSite(name='E2',demandTS=R,returnFlowFraction=1.0,
-                    suppliers=list(cheraghVeys),downstream=J,priority=1)
+                    suppliers=list(cheraghVeys),downstream=J,
+                    priority=1,latlon=c(36.187573, 46.140781))
 D<-createDemandSite(name='U2',demandTS=D,returnFlowFraction=0.7,
-                    suppliers=list(cheraghVeys),downstream=J,priority=2)
-                    A<-createDemandSite(name='A2',demandTS=A,returnFlowFraction=0.3,
-suppliers=list(cheraghVeys),downstream=J,priority=3)
+                    suppliers=list(cheraghVeys),downstream=J,
+                    priority=2,latlon=c(36.241318, 46.283620))
+A<-createDemandSite(name='A2',demandTS=A,returnFlowFraction=0.3,
+                    suppliers=list(cheraghVeys),downstream=J,
+                    priority=3,latlon=c(36.209470, 46.244950))
 Area<-addObjectToArea(Area, River)
 Area<-addObjectToArea(Area, cheraghVeys)
 Area<-addObjectToArea(Area, R)
@@ -150,12 +162,16 @@ Sonata<-createReservoir(name='Sonata',netEvaporation=E,downstream=J,
                         initialStorage=max,
                         geometry=list(deadStorage=min,
                                       capacity=max,
-                                      storageAreaTable=RC))
-River<-createRiver(name='Sonata-River',downstream=Sonata,discharge=Q)
+                                      storageAreaTable=RC),
+                        latlon=c(36.177088, 46.570563))
+River<-createRiver(name='Sonata-River',downstream=Sonata,
+                   discharge=Q,latlon=c(36.156056, 46.555296))
 R<-createDemandSite(name='E3',demandTS=R,returnFlowFraction=1.0,
-                    suppliers=list(Sonata),downstream=J,priority=1)
+                    suppliers=list(Sonata),downstream=J,
+                    priority=1,latlon=c(36.189166, 46.580790))
 A<-createDemandSite(name='A4',demandTS=A,returnFlowFraction=0.3,
-                    suppliers=list(Sonata),downstream=J,priority=2)
+                    suppliers=list(Sonata),downstream=J,
+                    priority=2,latlon=c(36.202963, 46.592099))
 Area<-addObjectToArea(Area, River)
 Area<-addObjectToArea(Area, Sonata)
 Area<-addObjectToArea(Area, R)
@@ -173,12 +189,16 @@ Sarogh<-createReservoir(name='Sarogh',netEvaporation=E,downstream=J,
                         initialStorage=max,
                         geometry=list(deadStorage=min,
                                       capacity=max,
-                                      storageAreaTable=RC))
-River<-createRiver(name='Sarogh-River',downstream=Sarogh,discharge=Q)
+                                      storageAreaTable=RC),
+                        latlon=c(36.515682, 47.110757))
+River<-createRiver(name='Sarogh-River',downstream=Sarogh,
+                   discharge=Q,latlon=c(36.531021, 47.192899))
 D<-createDemandSite(name='U3',demandTS=D,returnFlowFraction=0.7,
-                    suppliers=list(Sarogh),downstream=J,priority=1)
-                    A<-createDemandSite(name='A5',demandTS=A,returnFlowFraction=0.3,
-suppliers=list(Sarogh),downstream=J,priority=2)
+                    suppliers=list(Sarogh),downstream=J,
+                    priority=1,latlon=c(36.403821, 47.114230))
+A<-createDemandSite(name='A5',demandTS=A,returnFlowFraction=0.3,
+                    suppliers=list(Sarogh),downstream=J,
+                    priority=2,latlon=c(36.414478, 46.946946))
 Area<-addObjectToArea(Area, River)
 Area<-addObjectToArea(Area, Sarogh)
 Area<-addObjectToArea(Area, D)
